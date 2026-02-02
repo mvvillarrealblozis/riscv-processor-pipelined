@@ -16,3 +16,4 @@ A single-cycle RISC-V processor implementation in Verilog, with plans to evolve 
 ## Resources
 - RISC-V ISA Spec: https://riscv.org/technical/specifications/
 - RISC-V Card: https://www.cs.sfu.ca/~ashriram/Courses/CS295/assets/notebooks/RISCV/RISCV_CARD.pdf
+- RISC-V Reader
