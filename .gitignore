@@ -1,0 +1,5 @@
+*.vcd
+*_test
+.library_mapping.xml
+.project
+.settings/
