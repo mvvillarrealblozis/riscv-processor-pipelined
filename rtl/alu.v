@@ -11,7 +11,11 @@ module alu (
             4'b0010: result = a & b; // bitwise AND 
             4'b0011: result = a | b; // bitwise OR
             4'b0100: result = a ^ b; // bitwise XOR
+            
+            default result = 32'b0;
+        endcase
     end
+
 
 endmodule
 
