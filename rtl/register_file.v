@@ -9,6 +9,7 @@ module register_file (
     output [31:0] rdata1,        // Data from rs1
     output [31:0] rdata2         // Data from rs2
 );  
+
     // Create a 2D array: rf[32 entries][32 bits wide]
     reg [31:0] rf [31:0];
     integer i;
