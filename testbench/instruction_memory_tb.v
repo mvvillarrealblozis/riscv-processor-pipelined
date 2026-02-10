@@ -143,6 +143,7 @@ module instruction_memory_tb;
         // Test 5: Boundary Test
         address = 32'h000003FC; // Index 255 in memory array
         #1;
+        
         if (instruction == 32'h00000000)
             $display("Boundary Test PASSED");
         else
