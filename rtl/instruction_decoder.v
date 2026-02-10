@@ -4,7 +4,7 @@ module instruction_decoder (
     output [6:0] opcode,    // Bits [6:0]
     output [4:0] rd,        // Bits [11:7]          destination register
     output [2:0] funct3,    // Bits [14:12]         function code
-    output [4:0] rs1,       // Bits [19:15]         source register 1
+    output [4:0] rs1,       // Bits [19:15]         source register 1   
     output [4:0] rs2,       // Bits [24:20]         source register 2
     output [6:0] funct7,    // Bits [31:25]         function code (R-Type)
     output [31:0] imm_i,    // I-type immediate     (sign-extended)
@@ -28,7 +28,7 @@ module instruction_decoder (
 
     assign imm_b = {{19{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
 
-    assign imm_u = {instruction[31:12], 12'b0};
+    assign imm_u = {instruction[31:12], 1'b0};
 
     assign imm_j = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
 endmodule

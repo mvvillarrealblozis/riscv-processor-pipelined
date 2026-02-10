@@ -20,14 +20,14 @@ module alu (
 endmodule
 
 /*
-ADD - Addition
-SUB - Subtraction
-AND - Bitwise AND
-OR - Bitwise OR
-XOR - Bitwise XOR
-SLT - Set less than (signed)
-SLTU - Set less than (unsigned)
-SLL - Shift left logical
-SRL - Shift right logical
-SRA - Shift right arithmetic
+ADD - Addition                      // 0000 - R
+SUB - Subtraction                   // 0001 - R
+AND - Bitwise AND                   // 0010 - R
+OR - Bitwise OR                     // 0011 - R
+XOR - Bitwise XOR                   // 0100 - R
+SLT - Set less than (signed)        // 0101 - R
+SLTU - Set less than (unsigned)     // 0110 - R
+SLL - Shift left logical            // 0111 - R
+SRL - Shift right logical           // 1000 - R
+SRA - Shift right arithmetic        // 1001 - R
 */

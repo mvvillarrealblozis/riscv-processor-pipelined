@@ -125,4 +125,4 @@ module instruction_decoder_tb;
         end
     end
 
-endmodule
+endmodule   
