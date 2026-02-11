@@ -155,6 +155,5 @@ module control_unit_tb;
         else
             $display("XORI Test Failed: alu_op=%b | alu_src=%b | reg_write=%b | mem_write=%b | mem_read=%b | mem_to_reg=%b | branch=%b | jump=%b", alu_op, alu_src, reg_write, mem_write, mem_read, mem_to_reg, branch, jump);
 
-        $display("--------------------------------");
     end
 endmodule
