@@ -61,6 +61,28 @@ module control_unit (
                     3'b100: alu_op = 4'b0100;   // XORI
                 endcase
             end
+            
+            // Load Word
+            7'b0000011: begin
+                alu_src = 1;
+                reg_write = 1;
+                mem_read = 1;
+                mem_to_reg = 1;
+
+                case (funct3) 
+                    3'b010: alu_op = 4'b0000;
+                endcase
+            end
+
+            // Store Word
+            7'b0100011: begin
+                mem_write = 1;
+                alu_src = 1;
+
+                case (funct3)
+                    3'b010: alu_op = 4'b000;
+                endcase
+            end
 
             default: begin
                 alu_op = 4'b0000;

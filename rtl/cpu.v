@@ -34,6 +34,9 @@ module cpu(
 
     reg [31:0] imm_val;
 
+    wire [31:0] mem_read_data;
+    wire [31:0] reg_write_data;
+
     program_counter pc_inst (
         .clk(clk),
         .reset(reset),
@@ -81,7 +84,7 @@ module cpu(
         .rs1(rs1),
         .rs2(rs2),
         .rd(rd),
-        .write_data(alu_result),
+        .write_data(reg_write_data),
         .reg_write(reg_write),
         .rdata1(read_data1),
         .rdata2(read_data2)
@@ -94,6 +97,15 @@ module cpu(
         .result(alu_result)
     );
 
+    data_memory data_memory_instance (
+        .clk(clk),
+        .address(alu_result),
+        .write_data(read_data2),
+        .mem_write(mem_write),
+        .mem_read(mem_read),
+        .read_data(mem_read_data)
+    );
+
     always @(*) begin
         case (opcode)
             7'b0010011: imm_val = imm_i;
@@ -104,5 +116,7 @@ module cpu(
     end
 
     assign alu_input_b = (alu_src) ? imm_val : read_data2;
+
+    assign reg_write_data = (mem_to_reg) ? mem_read_data : alu_result;
 
 endmodule
