@@ -25,19 +25,21 @@ module cpu_testbench;
         @(negedge clk);
         reset = 0;
 
-        repeat(5) begin
-            $display("PC =%h | Instruction =%h", 
-                cpu_instance.pc_inst.pc_out,
-                cpu_instance.imem_inst.instruction);
+        
+        repeat(7) begin
+            //$display("PC =%h | Instruction =%h", 
+            //    cpu_instance.pc_inst.pc_out,
+            //    cpu_instance.imem_inst.instruction);
             @(posedge clk);
             #1;
         end
 
         $display("--------------------------------");
-
+        
         repeat (10) @(posedge clk);
         #1;
 
+        /*
         // Test 1: ADDI x1, x0, 5
         if (cpu_instance.regf_inst.rf[1] == 32'd5)
             $display("Test 1 PASSED: x1 = %0d", cpu_instance.regf_inst.rf[1]);
@@ -75,7 +77,48 @@ module cpu_testbench;
             $display("Test 5 PASSED: x5 = %0b", cpu_instance.regf_inst.rf[5]);
         else
             $display("Test 5 FAILED: x5 = %0b (expected 0)", cpu_instance.regf_inst.rf[5]);
+        */
+
+        // Test 1: ADDI x1, x0, 10
+        if (cpu_instance.regf_inst.rf[1] == 32'd10)
+            $display("Test 1 PASSED: x1 = %0d", cpu_instance.regf_inst.rf[1]);
+        else
+            $display("Test 1 FAILED: x1 = %0d (expected 10)", cpu_instance.regf_inst.rf[1]);
+
+        $display("--------------------------------");
+
+        // Test 2: ADDI x2, x0, 20
+        if (cpu_instance.regf_inst.rf[2] == 32'd20)
+            $display("Test 2 PASSED: x2 = %0d", cpu_instance.regf_inst.rf[2]);
+        else
+            $display("Test 2 FAILED: x2 = %0d (expected 20)", cpu_instance.regf_inst.rf[2]);
+
+        $display("--------------------------------");
+
+        // Test 3: LW x3, 0(x0)
+        if (cpu_instance.regf_inst.rf[3] == 32'd10)
+            $display("Test 3 PASSED: x3 = %0d", cpu_instance.regf_inst.rf[3]);
+        else
+            $display("Test 3 FAILED: x3 = %0d (expected 10)", cpu_instance.regf_inst.rf[3]);
+
+        $display("--------------------------------");
+
+        // Test 4: LW x4, 4(x0)
+        if (cpu_instance.regf_inst.rf[4] == 32'd20)
+            $display("Test 4 PASSED: x4 = %0d", cpu_instance.regf_inst.rf[4]);
+        else
+            $display("Test 4 FAILED: x4 = %0d (expected 20)", cpu_instance.regf_inst.rf[4]);
+
+        $display("--------------------------------");
         
+        // Test 5: ADD x5, x3, x4
+        if (cpu_instance.regf_inst.rf[5] == 32'd30)
+            $display("Test 5 PASSED: x5 = %0d", cpu_instance.regf_inst.rf[5]);
+        else
+            $display("Test 5 FAILED: x5 = %0d (expected 30)", cpu_instance.regf_inst.rf[5]);
+
         $finish;
+
     end
+
 endmodule

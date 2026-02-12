@@ -11,6 +11,7 @@ module data_memory(
 
     always @(posedge clk) begin
         if (mem_write) begin
+            //$display("Writing %0d to address %0d", write_data, address);
             memory[address >> 2] = write_data;
         end
     end

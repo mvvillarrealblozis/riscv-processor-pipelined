@@ -30,7 +30,7 @@ module data_memory_tb;
         $dumpvars(0, data_memory_tb);
 
         // Test 1: x1 == 10
-        address = 32'h1;
+        address = 32'd1;
         write_data = 32'd10;
         mem_write = 1;
         mem_read = 0;
@@ -51,7 +51,7 @@ module data_memory_tb;
         $display("--------------------------------");
 
         // Test 2: x2 == 20
-        address = 32'h2;
+        address = 32'd2;
         write_data = 32'd20;
         mem_write = 1;
         mem_read = 0;
@@ -135,7 +135,7 @@ module data_memory_tb;
         $display("--------------------------------");
 
         // Test 6: LW x3, 0(x0) Load from address 0 into x3 (should get 10)
-        address = 32'd3;
+        address = 32'd0;
         mem_write = 0;
         mem_read = 1;
         @(posedge clk);

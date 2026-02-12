@@ -97,7 +97,7 @@ module cpu(
         .result(alu_result)
     );
 
-    data_memory data_memory_instance (
+    data_memory data_mem_inst (
         .clk(clk),
         .address(alu_result),
         .write_data(read_data2),
@@ -111,6 +111,7 @@ module cpu(
             7'b0010011: imm_val = imm_i;
             7'b0100011: imm_val = imm_s;
             7'b0110111: imm_val = imm_u;
+            7'b0000011: imm_val = imm_i; // LW
             default: imm_val = 32'b0;
         endcase
     end

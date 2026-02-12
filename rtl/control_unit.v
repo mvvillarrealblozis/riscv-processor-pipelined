@@ -80,7 +80,7 @@ module control_unit (
                 alu_src = 1;
 
                 case (funct3)
-                    3'b010: alu_op = 4'b000;
+                    3'b010: alu_op = 4'b0000;
                 endcase
             end
 
