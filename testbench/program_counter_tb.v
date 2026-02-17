@@ -5,7 +5,9 @@ module program_counter_tb;
     reg clk;              // Clock - PC updates on rising edge
     reg reset;            // Reset signal
     reg pc_enable;        // Enable Signal (1 = update PC, 0 = hold)
-    
+    reg branch_taken;
+    reg [31:0] branch_target;
+
     // Outputs
     wire [31:0] pc_out;    // Current PC value
 
@@ -13,6 +15,8 @@ module program_counter_tb;
         .clk(clk),
         .reset(reset),
         .pc_enable(pc_enable),
+        .branch_taken(branch_taken),
+        .branch_target(branch_target),
         .pc_out(pc_out)
     );
 
@@ -142,6 +146,26 @@ module program_counter_tb;
             $display("Toggle Test PASSED");
         else
             $display("Toggle Test Failed: pc=%h", pc_out);
+        
+        // Test 6: Branch Target 
+        reset = 1;
+        pc_enable = 0;
+        @(posedge clk);
+
+        @(posedge clk);
+        reset = 0;
+        pc_enable = 1;
+
+        branch_target = 32'h00000044;
+        branch_taken = 1;
+
+        @(posedge clk);
+        #1;
+
+        if (pc_out == 32'h00000044)
+            $display("Branch Target Test PASSED");
+        else 
+            $display("Branch Target Test FAILED: pc=%h (expected 00000044)", pc_out);
 
         $finish;
     end

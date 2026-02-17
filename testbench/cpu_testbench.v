@@ -26,18 +26,26 @@ module cpu_testbench;
         reset = 0;
 
         
-        repeat(7) begin
-            //$display("PC =%h | Instruction =%h", 
-            //    cpu_instance.pc_inst.pc_out,
-            //    cpu_instance.imem_inst.instruction);
+        repeat(15) begin
+            $display("PC =%h | Instruction =%h", 
+                cpu_instance.pc_inst.pc_out,
+                cpu_instance.imem_inst.instruction);
             @(posedge clk);
             #1;
         end
+        $display("--------------------------------");
+
+        if (cpu_instance.regf_inst.rf[3] == 32'h0)
+            $display("Branches skipped instructions PASSED");
+        else 
+            $display("Branches did not skip instructions FAIL: x3=%d", cpu_instance.regf_inst.rf[3]);
 
         $display("--------------------------------");
-        
-        repeat (10) @(posedge clk);
-        #1;
+
+        if (cpu_instance.regf_inst.rf[5] == 32'd15)
+            $display("Instructions executed properly PASSED");
+        else 
+            $display("Instructions not executed properly FAIL: x5=%d", cpu_instance.regf_inst.rf[5]);
 
         /*
         // Test 1: ADDI x1, x0, 5
@@ -79,6 +87,7 @@ module cpu_testbench;
             $display("Test 5 FAILED: x5 = %0b (expected 0)", cpu_instance.regf_inst.rf[5]);
         */
 
+        /*
         // Test 1: ADDI x1, x0, 10
         if (cpu_instance.regf_inst.rf[1] == 32'd10)
             $display("Test 1 PASSED: x1 = %0d", cpu_instance.regf_inst.rf[1]);
@@ -118,7 +127,10 @@ module cpu_testbench;
             $display("Test 5 FAILED: x5 = %0d (expected 30)", cpu_instance.regf_inst.rf[5]);
 
         $finish;
+        */
 
+        
+        $finish;
     end
 
 endmodule

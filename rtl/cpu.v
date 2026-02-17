@@ -46,6 +46,11 @@ module cpu(
     wire [31:0] mem_read_data;  // Data loaded from memory (LW) → mem_to_reg MUX
     wire [31:0] reg_write_data; // Final data to write to register (after mem_to_reg MUX)
 
+
+    // Branching
+    wire branch_taken;
+    wire [31:0] branch_target;
+
     // ════════════════════════════════════════════════════════════════════════
     // MODULE INSTANTIATIONS
     // ════════════════════════════════════════════════════════════════════════
@@ -55,7 +60,9 @@ module cpu(
         .clk(clk),
         .reset(reset),
         .pc_enable(1'b1),       // Always incrementing (no stalls yet)
-        .pc_out(pc_out)         // → instruction memory address
+        .branch_taken(branch_taken),
+        .branch_target(branch_target),
+        .pc_out(pc_out)        // → instruction memory address
     );
 
     // FETCH: Instruction memory outputs instruction at current PC address
@@ -126,6 +133,15 @@ module cpu(
         .read_data(mem_read_data) // → mem_to_reg MUX (loaded data for LW)
     );
 
+    // Branch Unit
+    
+    branch_unit branch_unit_instance (
+        .rdata1(read_data1),
+        .rdata2(read_data2),
+        .funct3(funct3),
+        .branch(branch),
+        .branch_taken(branch_taken)
+    );
     // ════════════════════════════════════════════════════════════════════════
     // MUX LOGIC
     // ════════════════════════════════════════════════════════════════════════
@@ -151,5 +167,8 @@ module cpu(
     // Arithmetic: write ALU result (e.g. result of ADD, SUB)
     // Load:       write data loaded from memory (LW reads from memory, not ALU)
     assign reg_write_data = (mem_to_reg) ? mem_read_data : alu_result;
+
+
+    assign branch_target = pc_out + imm_b;
 
 endmodule

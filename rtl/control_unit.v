@@ -84,6 +84,13 @@ module control_unit (
                 endcase
             end
 
+            // Branch Instructions
+            7'b1100011: begin
+                alu_op = 4'b0001;
+                branch = 1;
+                
+            end
+
             default: begin
                 alu_op = 4'b0000;
                 alu_src = 0;
