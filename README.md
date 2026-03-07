@@ -13,7 +13,7 @@ A single-cycle RISC-V processor implementation in Verilog, with plans to evolve 
 ## How to Run
 (Coming soon)
 
-```javascript
+```mermaid
 graph LR
     %% Global Signals
     clk((clk)) -.-> PC
