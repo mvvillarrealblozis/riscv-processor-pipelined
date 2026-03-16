@@ -134,7 +134,6 @@ module cpu(
     );
 
     // Branch Unit
-    
     branch_unit branch_unit_instance (
         .rdata1(read_data1),
         .rdata2(read_data2),
