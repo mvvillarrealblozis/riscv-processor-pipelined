@@ -35,7 +35,7 @@ module instruction_decoder_tb;
         $dumpfile("instruction_decoder.vcd");
         $dumpvars(0, instruction_decoder_tb);
         
-        // Test 1: ADDI x1, x0, 5 → 32'h00500093
+        // Test 1: ADDI x1, x0, 5 -> 32'h00500093
         // I-type: opcode=0010011, rd=1, funct3=000, rs1=0, imm_i=5
 
         instruction = 32'h00500093;
@@ -52,7 +52,7 @@ module instruction_decoder_tb;
         end
 
         $display("--------------------------------");
-        // Test 2: ADDI x2, x0, 10 → 32'h00A00113  
+        // Test 2: ADDI x2, x0, 10 -> 32'h00A00113  
         // I-type: opcode=0010011, rd=2, funct3=000, rs1=0, imm_i=10
 
         instruction = 32'h00A00113;
@@ -70,7 +70,7 @@ module instruction_decoder_tb;
 
         $display("--------------------------------");
 
-        // Test 3: ADD x3, x1, x2 → 32'h002081B3
+        // Test 3: ADD x3, x1, x2 -> 32'h002081B3
         // R-type: opcode=0110011, rd=3, funct3=000, rs1=1, rs2=2, funct7=0000000
         
         instruction = 32'h002081B3;
@@ -88,7 +88,7 @@ module instruction_decoder_tb;
 
         $display("--------------------------------");
 
-        // Test 4: SUB x4, x1, x2 → 32'h40208233
+        // Test 4: SUB x4, x1, x2 -> 32'h40208233
         // R-type: opcode=0110011, rd=4, funct3=000, rs1=1, rs2=2, funct7=0100000
         
         instruction = 32'h40208233;
@@ -107,7 +107,7 @@ module instruction_decoder_tb;
 
         $display("--------------------------------");
 
-        // Test 5: AND x5, x1, x2 → 32'h0020F2B3
+        // Test 5: AND x5, x1, x2 -> 32'h0020F2B3
         // R-type: opcode=0110011, rd=5, funct3=111, rs1=1, rs2=2, funct7=0000000
 
         instruction = 32'h0020F2B3;
@@ -123,6 +123,22 @@ module instruction_decoder_tb;
             $display("  rs1: %d (expected 1)", rs1);
             $display("  rs2: %d (expected 2)", rs2);
         end
+        $display("--------------------------------");
+
+        // Test 6: JAL x2, 8 Jump to 0x0C, x2 = 0x08 (PC+4) -> 32'h0000016f
+        // J-type: opcode=1101111, rd=2, funct3=000, rs1=1, rs2=2, funct7=0100000
+        
+        instruction = 32'h0080016f;
+        #1;
+
+        if (opcode == 7'b1101111 && rd == 5'd2)
+            $display("Test 6 PASSED");
+        else begin
+            $display("Test 6 FAILED");
+            $display("  opcode: %b (expected 1101111)", opcode);
+            $display("  rd: %d (expected 2)", rd);
+        end 
+
     end
 
 endmodule   

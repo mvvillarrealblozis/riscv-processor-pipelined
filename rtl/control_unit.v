@@ -10,7 +10,10 @@ module control_unit (
     output reg mem_read,            // Memory read enable
     output reg mem_to_reg,          // Register write data: 0=ALU, 1=memory
     output reg branch,              // Branch
-    output reg jump                 // Jump
+    output reg jump,                // Jump (for pc)
+    output reg jump_jal,            // JAL
+    output reg jump_jalr,           // JALR
+    output reg pc_to_alu
 );
 
     always @(*) begin
@@ -22,6 +25,9 @@ module control_unit (
         mem_to_reg = 0;
         branch = 0;
         jump = 0;
+        jump_jal = 0;
+        jump_jalr = 0;
+        pc_to_alu = 0;
 
         case(opcode) 
             // R-Type Instructions
@@ -46,6 +52,7 @@ module control_unit (
                     //3'b011: alu_op = 4'b0110;   // SLTU
                     //3'b001: alu_op = 4'b0111;   // SLL
                     //3'b101: alu_op = 4'b1000;   // SRL
+                    default: alu_op = 4'b0000;
                 endcase
             end
             
@@ -59,6 +66,7 @@ module control_unit (
                     3'b111: alu_op = 4'b0010;   // ANDI
                     3'b110: alu_op = 4'b0011;   // ORI
                     3'b100: alu_op = 4'b0100;   // XORI
+                    default: alu_op = 4'b0000;
                 endcase
             end
             
@@ -71,6 +79,7 @@ module control_unit (
 
                 case (funct3) 
                     3'b010: alu_op = 4'b0000;
+                    default: alu_op = 4'b0000;
                 endcase
             end
 
@@ -81,6 +90,7 @@ module control_unit (
 
                 case (funct3)
                     3'b010: alu_op = 4'b0000;
+                    default: alu_op = 4'b0000;
                 endcase
             end
 
@@ -88,7 +98,28 @@ module control_unit (
             7'b1100011: begin
                 alu_op = 4'b0001;
                 branch = 1;
-                
+            end
+            
+            // JAL
+            7'b1101111: begin
+                reg_write = 1;
+                jump = 1;
+                jump_jal = 1;
+                pc_to_alu = 1;
+                alu_src = 1;
+            end
+
+            // JALR
+            7'b1100111: begin
+                reg_write = 1;
+                jump = 1;
+                jump_jalr = 1;
+                alu_src = 1;
+                pc_to_alu = 0;
+                case(funct3)
+                    3'b000: alu_op = 4'b0000;
+                    default: alu_op = 4'b0000;
+                endcase
             end
 
             default: begin
@@ -100,6 +131,9 @@ module control_unit (
                 mem_to_reg = 0;
                 branch = 0;
                 jump = 0;
+                jump_jal = 0;
+                jump_jalr = 0;
+                pc_to_alu = 0;
             end
         endcase
     end

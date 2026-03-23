@@ -28,7 +28,7 @@ module instruction_decoder (
 
     assign imm_b = {{19{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
 
-    assign imm_u = {instruction[31:12], 1'b0};
+    assign imm_u = {instruction[31:12], 12'b0};
 
     assign imm_j = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
 endmodule

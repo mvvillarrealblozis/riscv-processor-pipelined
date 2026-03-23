@@ -28,14 +28,18 @@ module cpu(
     wire mem_write;             // 1=write to data memory (SW)
     wire mem_read;              // 1=read from data memory (LW)
     wire mem_to_reg;            // 0=write ALU result to reg, 1=write memory data to reg
-    wire branch;                // 1=branch instruction (future)
-    wire jump;                  // 1=jump instruction (future)
+    wire branch;                // 1=branch instruction 
+    wire jump;                  // 1=jump instruction
+    wire jump_jal;
+    wire jump_jalr;
+    wire pc_to_alu;
 
     // ─── REGISTER FILE DATA ──────────────────────────────────────────────────
     wire [31:0] read_data1;     // Value of rs1 → ALU input A
     wire [31:0] read_data2;     // Value of rs2 → ALU input B (R-type) or data memory write (SW)
 
     // ─── ALU SIGNALS ─────────────────────────────────────────────────────────
+    wire [31:0] alu_input_a;    // First ALU operand
     wire [31:0] alu_input_b;    // Second ALU operand (after alu_src MUX)
     wire [31:0] alu_result;     // ALU output → data memory address OR register write data
 
@@ -44,12 +48,15 @@ module cpu(
 
     // ─── MEMORY / WRITEBACK ──────────────────────────────────────────────────
     wire [31:0] mem_read_data;  // Data loaded from memory (LW) → mem_to_reg MUX
-    wire [31:0] reg_write_data; // Final data to write to register (after mem_to_reg MUX)
+    reg [31:0] reg_write_data; // Final data to write to register (after mem_to_reg MUX)
 
 
     // Branching
     wire branch_taken;
     wire [31:0] branch_target;
+
+    // Jumps
+    reg [31:0] next_pc;
 
     // ════════════════════════════════════════════════════════════════════════
     // MODULE INSTANTIATIONS
@@ -60,8 +67,7 @@ module cpu(
         .clk(clk),
         .reset(reset),
         .pc_enable(1'b1),       // Always incrementing (no stalls yet)
-        .branch_taken(branch_taken),
-        .branch_target(branch_target),
+        .next_pc(next_pc),
         .pc_out(pc_out)        // → instruction memory address
     );
 
@@ -99,7 +105,10 @@ module cpu(
         .mem_read(mem_read),    // → data memory (load from memory?)
         .mem_to_reg(mem_to_reg),// → mem_to_reg MUX (ALU result or memory data?)
         .branch(branch),        // → PC logic (future)
-        .jump(jump)             // → PC logic (future)
+        .jump(jump),            // → PC logic (future)
+        .jump_jal(jump_jal),
+        .jump_jalr(jump_jalr),
+        .pc_to_alu(pc_to_alu)
     );
 
     // EXECUTE: Register file reads source registers, writes result
@@ -117,7 +126,7 @@ module cpu(
 
     // EXECUTE: ALU performs the operation
     alu alu_inst (
-        .a(read_data1),         // ← always comes from rs1
+        .a(alu_input_a),         // ← always comes from rs1
         .b(alu_input_b),        // ← comes from alu_src MUX (register or immediate)
         .alu_op(alu_op),        // ← control unit tells us which operation
         .result(alu_result)     // → data memory address OR register write data
@@ -153,11 +162,18 @@ module cpu(
             7'b0000011: imm_val = imm_i;    // I-type load (LW) - same format as above
             7'b0100011: imm_val = imm_s;    // S-type store (SW) - split immediate
             7'b0110111: imm_val = imm_u;    // U-type (LUI) - upper 20 bits
+            7'b1100011: imm_val = imm_b;    // B-type
+            7'b1101111: imm_val = imm_j;    // J-type JAL
+            7'b1100111: imm_val = imm_i;    // JALR
             default:    imm_val = 32'b0;    // R-type and others don't use immediate
         endcase
     end
 
-    // ALU SOURCE MUX: Choose second ALU operand
+    // ALU SOURCE A MUX: Choose first ALU operand
+    // JAL : Use current PC (pc_out)
+    assign alu_input_a = (pc_to_alu) ? pc_out : read_data1;
+
+    // ALU SOURCE B MUX: Choose second ALU operand
     // R-type: ALU operates on two registers (rs1 op rs2)
     // I-type / Load / Store: ALU operates on register + immediate (rs1 + imm)
     assign alu_input_b = (alu_src) ? imm_val : read_data2;
@@ -165,9 +181,26 @@ module cpu(
     // WRITEBACK MUX: Choose what data to write back to register file
     // Arithmetic: write ALU result (e.g. result of ADD, SUB)
     // Load:       write data loaded from memory (LW reads from memory, not ALU)
-    assign reg_write_data = (mem_to_reg) ? mem_read_data : alu_result;
-
+    // Jump:       write pc_out + 4 (saves the return address)
+    always @(*) begin
+        if (jump)
+            reg_write_data = pc_out + 4;
+        else if (mem_to_reg)
+            reg_write_data = mem_read_data;
+        else
+            reg_write_data = alu_result;
+    end
 
     assign branch_target = pc_out + imm_b;
 
+    always @(*) begin
+        if (jump_jal)
+            next_pc = alu_result;
+        else if (jump_jalr)
+            next_pc = alu_result & ~32'h1;
+        else if (branch_taken)
+            next_pc = branch_target;
+        else
+            next_pc = pc_out + 4;
+    end
 endmodule

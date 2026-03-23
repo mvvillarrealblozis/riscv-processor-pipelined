@@ -13,6 +13,7 @@ module control_unit_tb;
     wire mem_to_reg;
     wire branch;
     wire jump;
+    wire pc_to_alu;
 
     control_unit control_unit_instance (
         .opcode(opcode),
@@ -25,7 +26,8 @@ module control_unit_tb;
         .mem_read(mem_read),
         .mem_to_reg(mem_to_reg),
         .branch(branch),
-        .jump(jump)
+        .jump(jump),
+        .pc_to_alu(pc_to_alu)
     );
 
     initial begin
@@ -154,6 +156,30 @@ module control_unit_tb;
             $display("XORI Test Passed");
         else
             $display("XORI Test Failed: alu_op=%b | alu_src=%b | reg_write=%b | mem_write=%b | mem_read=%b | mem_to_reg=%b | branch=%b | jump=%b", alu_op, alu_src, reg_write, mem_write, mem_read, mem_to_reg, branch, jump);
+
+        $display("--------------------------------");
+
+        // Test 9: JAL
+        opcode = 7'b1101111;
+        funct3 = 3'b000;
+        #1;
+
+        if (alu_op == 4'b0000 && alu_src == 1 && reg_write == 1 && mem_write == 0 && mem_read == 0 && mem_to_reg == 0 && branch == 0 && jump == 1 && pc_to_alu == 1)
+            $display("JAL Test Passed");
+        else
+            $display("JAL Test Failed: alu_op=%b | alu_src=%b | reg_write=%b | mem_write=%b | mem_read=%b | mem_to_reg=%b | branch=%b | jump=%b", alu_op, alu_src, reg_write, mem_write, mem_read, mem_to_reg, branch, jump);
+
+        $display("--------------------------------");
+
+        // Test 10: JALR
+        opcode = 7'b1100111;
+        funct3 = 3'b000;
+        #1;
+
+        if (alu_op == 4'b0000 && alu_src == 1 && reg_write == 1 && mem_write == 0 && mem_read == 0 && mem_to_reg == 0 && branch == 0 && jump == 1 && pc_to_alu == 0)
+            $display("JALR Test Passed");
+        else
+            $display("JALR Test Failed: alu_op=%b | alu_src=%b | reg_write=%b | mem_write=%b | mem_read=%b | mem_to_reg=%b | branch=%b | jump=%b", alu_op, alu_src, reg_write, mem_write, mem_read, mem_to_reg, branch, jump);
 
     end
 endmodule

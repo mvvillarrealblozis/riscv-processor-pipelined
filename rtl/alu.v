@@ -15,7 +15,6 @@ module alu (
             default result = 32'b0;
         endcase
     end
-
 endmodule
 
 /*

@@ -3,3 +3,17 @@
 .library_mapping.xml
 .project
 .settings/
+.VSCodeCounter/
+*.dig
+digital/
+*.vcd
+*.out
+*_test
+cpu_test
+alu_test
+register_file_test
+branch_unit_test
+program_counter_test
+instruction_decoder_test
+control_unit_test
+data_memory_test

@@ -21,20 +21,68 @@ module cpu_testbench;
 
         reset = 1;
         @(posedge clk);
-
         @(negedge clk);
         reset = 0;
 
-        
-        repeat(15) begin
-            $display("PC =%h | Instruction =%h", 
-                cpu_instance.pc_inst.pc_out,
-                cpu_instance.imem_inst.instruction);
-            @(posedge clk);
-            #1;
-        end
+        // Test 1: JAL saves return address in x1 and jumps to 0x10
+        wait(cpu_instance.pc_inst.pc_out == 32'h10);
+        @(negedge clk);
+        #1;
+
+        if (cpu_instance.regf_inst.rf[1] == 32'h08)  
+            $display("JAL saved return address PASSED");
+        else 
+            $display("JAL did not save return address FAIL: x1=%h", cpu_instance.regf_inst.rf[1]);
         $display("--------------------------------");
 
+        if (cpu_instance.regf_inst.rf[3] == 32'h0)
+            $display("JAL skipped instruction PASSED");
+        else 
+            $display("JAL did not skip FAIL: x3=%d", cpu_instance.regf_inst.rf[3]);
+        $display("--------------------------------");
+
+        // Test 2: JALR returns to 0x08
+        wait(cpu_instance.pc_inst.pc_out == 32'h08);
+        @(posedge clk);  // Let x3 get written
+        @(negedge clk);
+        #1;
+
+        if (cpu_instance.regf_inst.rf[3] == 32'd99)
+            $display("JALR returned to 0x08 PASSED");
+        else 
+            $display("JALR did not return FAIL: x3=%d", cpu_instance.regf_inst.rf[3]);
+        $display("--------------------------------");
+
+        // Test 3: Odd address masking
+        wait(cpu_instance.pc_inst.pc_out == 32'h18);
+        @(posedge clk);
+        @(negedge clk);
+        #1;
+
+        if (cpu_instance.regf_inst.rf[1] == 32'd9)
+            $display("ADDI x1=9 PASSED");
+        else 
+            $display("ADDI x1=9 FAIL: x1=%d", cpu_instance.regf_inst.rf[1]);
+        $display("--------------------------------");
+        
+        wait(cpu_instance.pc_inst.pc_out == 32'h1C);
+        @(posedge clk);
+        @(negedge clk);
+        #1;
+
+        if (cpu_instance.pc_inst.pc_out == 32'h08)
+            $display("JALR odd address masking (PC=8) PASSED");
+        else 
+            $display("JALR odd address masking FAIL: PC=%h", cpu_instance.pc_inst.pc_out);
+        $display("--------------------------------");
+
+        if (cpu_instance.regf_inst.rf[2] == 32'h20)
+            $display("JALR saved return address PASSED");
+        else
+            $display("JALR did not save return address FAIL: x2=%h", cpu_instance.regf_inst.rf[2]);
+
+        $finish;
+        /*
         if (cpu_instance.regf_inst.rf[3] == 32'h0)
             $display("Branches skipped instructions PASSED");
         else 
@@ -47,7 +95,7 @@ module cpu_testbench;
         else 
             $display("Instructions not executed properly FAIL: x5=%d", cpu_instance.regf_inst.rf[5]);
 
-        /*
+
         // Test 1: ADDI x1, x0, 5
         if (cpu_instance.regf_inst.rf[1] == 32'd5)
             $display("Test 1 PASSED: x1 = %0d", cpu_instance.regf_inst.rf[1]);
@@ -128,9 +176,6 @@ module cpu_testbench;
 
         $finish;
         */
-
-        
-        $finish;
     end
 
 endmodule
