@@ -67,7 +67,7 @@ riscv-processor-pipelined/
 ## Development Log
 
 ### Completed
-- ✅ Single-cycle processor (see [base repo](https://github.com/mvvillarrealblozis/riscv-processor))
+- Single-cycle processor (see [base repo](https://github.com/mvvillarrealblozis/riscv-processor))
 
 ### In Progress
 - Pipeline register design
