@@ -5,8 +5,7 @@ module program_counter_tb;
     reg clk;              // Clock - PC updates on rising edge
     reg reset;            // Reset signal
     reg pc_enable;        // Enable Signal (1 = update PC, 0 = hold)
-    reg branch_taken;
-    reg [31:0] branch_target;
+    reg [31:0] next_pc;
 
     // Outputs
     wire [31:0] pc_out;    // Current PC value
@@ -15,8 +14,7 @@ module program_counter_tb;
         .clk(clk),
         .reset(reset),
         .pc_enable(pc_enable),
-        .branch_taken(branch_taken),
-        .branch_target(branch_target),
+        .next_pc(next_pc),
         .pc_out(pc_out)
     );
 
@@ -155,9 +153,6 @@ module program_counter_tb;
         @(posedge clk);
         reset = 0;
         pc_enable = 1;
-
-        branch_target = 32'h00000044;
-        branch_taken = 1;
 
         @(posedge clk);
         #1;
