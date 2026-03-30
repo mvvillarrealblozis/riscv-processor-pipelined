@@ -37,10 +37,10 @@ module if_id_tb;
         @(posedge clk);
         #1;
 
-        if (if_pc == 32'h00000013 && if_instruction == 32'h00000013)
+        if (if_pc == 32'h00000000 && if_instruction == 32'h00000013)
             $display("Reset PASSED");
         else
-            $display("Reset FAILED: if_pc=%h (expected NOP) | if_instruction=%h (expected NOP)", if_pc, if_instruction);
+            $display("Reset FAILED: if_pc=%h (expected 0) | if_instruction=%h (expected NOP)", if_pc, if_instruction);
         $display("--------------------------------");
 
         // Test 2: Enable

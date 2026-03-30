@@ -1,4 +1,5 @@
 module if_id (
+    // INSTRUCTION FETCH -> INSTRUCTION DECODE
     input clk,
     input reset,
     input enable,                       // 1 = update, 0 = stall
@@ -15,7 +16,7 @@ module if_id (
     // 0x00000013 is addi x0, x0, 0 or NOP 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            if_pc <= 32'h00000013;
+            if_pc <= 32'h00000000;
             if_instruction <= 32'h00000013;
         end
         else if (enable) begin
