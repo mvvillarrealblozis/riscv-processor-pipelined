@@ -19,8 +19,8 @@ module if_id_tb;
         .enable(enable),
         .pc(pc),
         .instruction(instruction),
-        .if_pc(if_pc),
-        .if_instruction(if_instruction)
+        .id_pc(if_pc),
+        .id_instruction(if_instruction)
     );
 
     initial begin

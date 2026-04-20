@@ -11,8 +11,8 @@ module program_counter(
         if (reset) begin
             pc_out <= 0;
         end else if (pc_enable) begin
-                pc_out <= next_pc;
-            end
+            pc_out <= next_pc;
+        end
     end
 
 endmodule

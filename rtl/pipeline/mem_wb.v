@@ -8,8 +8,9 @@ module mem_wb (
 
     // Data Values
     input [31:0] alu_result ,    // Arithmetic Instructions
-    input [31:0] read_data2,     // For loads
-
+    input [31:0] mem_data,
+    input [31:0] pc_plus_4,
+    
     // Register Address
     input [4:0] rd,
 
@@ -18,33 +19,36 @@ module mem_wb (
     input reg_write,              // enable register write 
 
     // Outputs
-    output reg [31:0] mem_alu_result,
-    output reg [31:0] mem_read_data2,
-    
-    output reg [4:0] mem_rd,
+    output reg [31:0] wb_alu_result,
+    output reg [31:0] wb_mem_data,
+    output reg [31:0] wb_pc_plus_4,
 
-    output reg mem_mem_to_reg,
-    output reg mem_reg_write
+    output reg [4:0] wb_rd,
+
+    output reg wb_mem_to_reg,
+    output reg wb_reg_write
 );
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            mem_alu_result <= 32'h00000000;
-            mem_read_data2 <= 32'h00000000;
+            wb_alu_result <= 32'h00000000;
+            wb_mem_data <= 32'h00000000;
+            wb_pc_plus_4 <= 32'h00000000;
 
-            mem_rd <= 5'b00000;
+            wb_rd <= 5'b00000;
 
-            mem_mem_to_reg = 0;
-            mem_reg_write = 0;
+            wb_mem_to_reg = 0;
+            wb_reg_write = 0;
         end
         else if (enable) begin
-            mem_alu_result <= alu_result;
-            mem_read_data2 <= read_data2;
+            wb_alu_result <= alu_result;
+            wb_mem_data <= mem_data;
+            wb_pc_plus_4 <= pc_plus_4;
+            
+            wb_rd <= rd;
 
-            mem_rd <= rd;
-
-            mem_mem_to_reg = mem_to_reg;
-            mem_reg_write = reg_write;
+            wb_mem_to_reg = mem_to_reg;
+            wb_reg_write = reg_write;
         end
     end
 endmodule;

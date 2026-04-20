@@ -1,13 +1,12 @@
 `timescale 1ns/1ps
 
 module mem_wb_tb;
-    // Inputs
     reg clk;
     reg reset;
     reg enable;
 
     reg [31:0] alu_result;
-    reg [31:0] read_data2;
+    reg [31:0] mem_data;
 
     reg [4:0] rd;
 
@@ -15,29 +14,29 @@ module mem_wb_tb;
     reg reg_write;
 
     // Outputs
+    wire [31:0] wb_alu_result;
+    wire [31:0] wb_mem_data;
 
-    wire [31:0] mem_alu_result;
-    wire [31:0] mem_read_data2;
+    wire [4:0] wb_rd;
 
-    wire [4:0] mem_rd;
-
-    wire mem_mem_to_reg;
-    wire mem_reg_write;
+    wire wb_mem_to_reg;
+    wire wb_reg_write;
 
     mem_wb mem_wb_instance (
         .clk(clk),
         .reset(reset),
         .enable(enable),
         .alu_result(alu_result),
-        .read_data2(read_data2),
+        .mem_data(mem_data),  
         .rd(rd),
         .mem_to_reg(mem_to_reg),
         .reg_write(reg_write),
-        .mem_alu_result(mem_alu_result),
-        .mem_read_data2(mem_read_data2),
-        .mem_rd(mem_rd),
-        .mem_mem_to_reg(mem_mem_to_reg),
-        .mem_reg_write(mem_reg_write)
+
+        .wb_alu_result(wb_alu_result),
+        .wb_mem_data(wb_mem_data),
+        .wb_rd(wb_rd),
+        .wb_mem_to_reg(wb_mem_to_reg),
+        .wb_reg_write(wb_reg_write)
     );
 
     initial begin
@@ -56,11 +55,11 @@ module mem_wb_tb;
         @(posedge clk);
         #1;
 
-        if (mem_alu_result == 32'h00000000 &&
-            mem_read_data2 == 32'h00000000 &&
-            mem_rd == 5'b00000 &&
-            mem_mem_to_reg == 0 &&
-            mem_reg_write == 0
+        if (wb_alu_result == 32'h00000000 &&
+            wb_mem_data == 32'h00000000 &&
+            wb_rd == 5'b00000 &&
+            wb_mem_to_reg == 0 &&
+            wb_reg_write == 0
         )
             $display("Reset Test PASSED");
         else
@@ -73,7 +72,7 @@ module mem_wb_tb;
         enable = 1;
 
         alu_result = 32'hAAAA_AAAA;
-        read_data2 = 32'hBBBB_BBBB;
+        mem_data = 32'hBBBB_BBBB;
         
         rd = 5'b00011;
 
@@ -83,11 +82,11 @@ module mem_wb_tb;
         @(posedge clk);
         #1;
 
-        if (mem_alu_result == 32'hAAAA_AAAA &&
-            mem_read_data2 == 32'hBBBB_BBBB &&
-            mem_rd == 5'b00011 &&
-            mem_mem_to_reg == 1 &&
-            mem_reg_write == 1
+        if (wb_alu_result == 32'hAAAA_AAAA &&
+            wb_mem_data == 32'hBBBB_BBBB &&
+            wb_rd == 5'b00011 &&
+            wb_mem_to_reg == 1 &&
+            wb_reg_write == 1
         )
             $display("Enable Test PASSED");
         else
@@ -99,7 +98,7 @@ module mem_wb_tb;
         enable = 0;
 
         alu_result = 32'h1111_1111;
-        read_data2 = 32'h2222_2222;
+        mem_data = 32'h2222_2222;
         
         rd = 5'b1111;
 
@@ -109,11 +108,11 @@ module mem_wb_tb;
         @(posedge clk);
         #1;
 
-        if (mem_alu_result == 32'hAAAA_AAAA &&
-            mem_read_data2 == 32'hBBBB_BBBB &&
-            mem_rd == 5'b00011 &&
-            mem_mem_to_reg == 1 &&
-            mem_reg_write == 1
+        if (wb_alu_result == 32'hAAAA_AAAA &&
+            wb_mem_data == 32'hBBBB_BBBB &&
+            wb_rd == 5'b00011 &&
+            wb_mem_to_reg == 1 &&
+            wb_reg_write == 1
         )
             $display("Stall Test PASSED");
         else
