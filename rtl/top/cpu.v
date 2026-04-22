@@ -119,7 +119,7 @@ module cpu(
     wire wb_mem_to_reg;
 
     // Final writeback data (after final MUX)
-    reg [31:0] wb_reg_write_data;
+    wire [31:0] wb_reg_write_data;
 
     // ========================================================================
     // MODULE INSTANTIATIONS
@@ -195,7 +195,7 @@ module cpu(
         .reset(reset),
         .rs1(id_rs1),              // ← address of first source register
         .rs2(id_rs2),              // ← address of second source register
-        .rd(id_rd),                // ← address of destination register
+        .rd(wb_rd),                // ← address of destination register
         .write_data(wb_reg_write_data), // ← result to write (from mem_to_reg MUX)
         .reg_write(wb_reg_write),  // ← control signal: should we write?
         .rdata1(id_read_data1),    // → ALU input A
@@ -333,6 +333,7 @@ module cpu(
     // WB: WRITEBACK STAGE
     // ========================================================================
 
+    assign wb_reg_write_data = (wb_mem_to_reg) ? wb_mem_data : wb_alu_result;
 
     // ========================================================================
     // MUX LOGIC
@@ -361,17 +362,6 @@ module cpu(
     // R-type: ALU operates on two registers (rs1 op rs2)
     // I-type / Load / Store: ALU operates on register + immediate (rs1 + imm)
     assign ex_alu_input_b = (ex_alu_src) ? ex_imm_val : ex_read_data2;
-
-    // WRITEBACK MUX: Choose what data to write back to register file
-    // Arithmetic: write ALU result (e.g. result of ADD, SUB)
-    // Load:       write data loaded from memory (LW reads from memory, not ALU)
-    // Jump:       write pc_out + 4 (saves the return address)
-    always @(*) begin
-        if (wb_mem_to_reg)
-            wb_reg_write_data = wb_mem_data;
-        else
-            wb_reg_write_data = wb_alu_result;
-    end
 
     assign ex_branch_target = ex_pc + ex_imm_val;
 
