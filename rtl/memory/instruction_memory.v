@@ -7,16 +7,17 @@ module instruction_memory(
     integer i;
     
     initial begin
-        memory[0] = 32'h00500093;   // ADDI x1, x0, 5
-        memory[1] = 32'h00000013;   // NOP
-        memory[2] = 32'h00000013;   // NOP
-        memory[3] = 32'h00000013;   // NOP
-        memory[4] = 32'h00000013;   // NOP
-        memory[5] = 32'h00000013;
-        memory[6] = 32'h00a08113;   //ADDI x2, x1, 10
+        for (i = 0; i < 256; i = i + 1)
+            memory[i] = 32'h00000013;
 
-        for (i = 7; i < 256; i = i + 1)
-            memory[i] = 32'h00000000;
+        memory[0] = 32'h00002083;   // LW   x1, 0(x0)
+        memory[1] = 32'h00a08113;   // ADDI x2, x1, 10 
+
+        // memory[5] = 32'h00500093;
+        // memory[6] = 32'h00000013;
+        // memory[7] = 32'h00a08113;
+
+
     end
 
     assign instruction = memory[address >> 2];

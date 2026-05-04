@@ -120,6 +120,14 @@ module cpu(
 
     // Final writeback data (after final MUX)
     wire [31:0] wb_reg_write_data;
+    
+    wire [1:0] forward_a;
+    wire [1:0] forward_b;
+
+    wire stall;
+    
+    reg [31:0] forwarded_rdata1;
+    reg [31:0] forwarded_rdata2;
 
     // ========================================================================
     // MODULE INSTANTIATIONS
@@ -131,7 +139,7 @@ module cpu(
     program_counter pc_inst (
         .clk(clk),
         .reset(reset),
-        .pc_enable(1'b1),       // Always incrementing (no stalls yet)
+        .pc_enable(!stall),       // Always incrementing (no stalls yet)
         .next_pc(next_pc),
         .pc_out(pc_out)        // → instruction memory address
     );
@@ -205,7 +213,7 @@ module cpu(
     id_ex id_ex_instance (
         .clk(clk),
         .reset(reset),
-        .enable(1'b1),
+        .enable(!stall),
         .pc(id_pc),
 
         // ===== INPUTS from ID stage (id_* signals) =====
@@ -218,15 +226,15 @@ module cpu(
         .funct3(id_funct3),
         .alu_op(id_alu_op),
         .alu_src(id_alu_src),
-        .reg_write(id_reg_write),
-        .mem_write(id_mem_write),
-        .mem_read(id_mem_read),
-        .mem_to_reg(id_mem_to_reg),
-        .branch(id_branch),
-        .jump(id_jump),
-        .jump_jal(id_jump_jal),
-        .jump_jalr(id_jump_jalr),
-        .pc_to_alu(id_pc_to_alu),
+        .reg_write(stall ? 1'b0 : id_reg_write),
+        .mem_write(stall ? 1'b0 : id_mem_write),
+        .mem_read(stall ? 1'b0 : id_mem_read),
+        .mem_to_reg(stall ? 1'b0 : id_mem_to_reg),
+        .branch(stall ? 1'b0 : id_branch),
+        .jump(stall ? 1'b0 : id_jump),
+        .jump_jal(stall ? 1'b0 : id_jump_jal),
+        .jump_jalr(stall ? 1'b0 : id_jump_jalr),
+        .pc_to_alu(stall ? 1'b0 : id_pc_to_alu),
 
         .ex_pc(ex_pc),
         .ex_read_data1(ex_read_data1),
@@ -261,6 +269,25 @@ module cpu(
         .result(ex_alu_result)     // → data memory address OR register write data
     );
 
+    forwarding_unit forwarding_unit_instance (
+        .ex_rs1(ex_rs1),
+        .ex_rs2(ex_rs2),
+        .mem_rd(mem_rd),
+        .mem_reg_write(mem_reg_write),
+        .wb_rd(wb_rd),
+        .wb_reg_write(wb_reg_write),
+        .forward_a(forward_a),
+        .forward_b(forward_b)
+    );
+
+    hazard_detection_unit hazard_detection_unit_instance (
+        .id_rs1(id_rs1),
+        .id_rs2(id_rs2),
+        .ex_rd(ex_rd),
+        .ex_mem_read(ex_mem_read),
+        .stall(stall)
+    );
+
     ex_mem ex_mem_instance (
         .clk(clk),
         .reset(reset),
@@ -268,7 +295,7 @@ module cpu(
 
         // ===== INPUTS from EX stage (ex_* signals) =====
         .alu_result(ex_alu_result),
-        .read_data2(ex_read_data2),
+        .read_data2(forwarded_rdata2),
         .rd(ex_rd),
         .mem_write(ex_mem_write),
         .mem_read(ex_mem_read),
@@ -322,8 +349,8 @@ module cpu(
 
     // Branch Unit
     branch_unit branch_unit_instance (
-        .rdata1(ex_read_data1),
-        .rdata2(ex_read_data2),
+        .rdata1(forwarded_rdata1),
+        .rdata2(forwarded_rdata2),
         .funct3(ex_funct3),
         .branch(ex_branch),
         .branch_taken(ex_branch_taken)
@@ -354,14 +381,27 @@ module cpu(
         endcase
     end
 
-    // ALU SOURCE A MUX: Choose first ALU operand
-    // JAL : Use current PC (pc_out)
-    assign ex_alu_input_a = (ex_pc_to_alu) ? ex_pc : ex_read_data1;
+    // ALU SOURCE A MUX
+    always @(*) begin
+        case (forward_a)
+            2'b10: forwarded_rdata1 = mem_alu_result;
+            2'b01: forwarded_rdata1 = wb_reg_write_data;
+            default: forwarded_rdata1 = ex_read_data1;
+        endcase
+    end
 
-    // ALU SOURCE B MUX: Choose second ALU operand
-    // R-type: ALU operates on two registers (rs1 op rs2)
-    // I-type / Load / Store: ALU operates on register + immediate (rs1 + imm)
-    assign ex_alu_input_b = (ex_alu_src) ? ex_imm_val : ex_read_data2;
+    assign ex_alu_input_a = (ex_pc_to_alu) ? ex_pc : forwarded_rdata1;
+
+    // ALU SOURCE B MUX
+    always @(*) begin
+        case (forward_b)
+            2'b10: forwarded_rdata2 = mem_alu_result;
+            2'b01: forwarded_rdata2 = wb_reg_write_data;
+            default: forwarded_rdata2 = ex_read_data2;
+        endcase
+    end
+
+    assign ex_alu_input_b = (ex_alu_src) ? ex_imm_val : forwarded_rdata2;
 
     assign ex_branch_target = ex_pc + ex_imm_val;
 
