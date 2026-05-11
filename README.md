@@ -207,4 +207,4 @@ Specialization: Digital Design & Computer Architecture
 
 ---
 
-*This processor demonstrates practical understanding of pipeline hazards, forwarding networks, and control flow handling—core concepts in modern CPU design.*
+*This processor demonstrates practical understanding of pipeline hazards, forwarding networks, and control flow handling core concepts in modern CPU design.*
