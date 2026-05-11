@@ -17,6 +17,7 @@ module mem_wb (
     // Control Signals
     input mem_to_reg,            // select ALU or mem data
     input reg_write,              // enable register write 
+    input jump,
 
     // Outputs
     output reg [31:0] wb_alu_result,
@@ -26,7 +27,8 @@ module mem_wb (
     output reg [4:0] wb_rd,
 
     output reg wb_mem_to_reg,
-    output reg wb_reg_write
+    output reg wb_reg_write,
+    output reg wb_jump
 );
 
     always @(posedge clk or posedge reset) begin
@@ -39,6 +41,7 @@ module mem_wb (
 
             wb_mem_to_reg <= 0;
             wb_reg_write <= 0;
+            wb_jump <= 0;
         end
         else if (enable) begin
             wb_alu_result <= alu_result;
@@ -49,6 +52,7 @@ module mem_wb (
 
             wb_mem_to_reg <= mem_to_reg;
             wb_reg_write <= reg_write;
+            wb_jump <= jump;
         end
     end
 endmodule

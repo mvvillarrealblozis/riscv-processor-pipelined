@@ -21,6 +21,8 @@ module ex_mem(
     // Jumps 
     input [31:0] pc_plus_4,
 
+    input jump,
+
     // Outputs
     output reg [31:0] mem_alu_result,
     output reg [31:0] mem_read_data2,
@@ -32,7 +34,9 @@ module ex_mem(
     output reg mem_mem_to_reg,
     output reg mem_reg_write,
 
-    output reg [31:0] mem_pc_plus_4
+    output reg [31:0] mem_pc_plus_4,
+
+    output reg mem_jump
 );
 
     always @(posedge clk or posedge reset) begin
@@ -47,6 +51,7 @@ module ex_mem(
             mem_reg_write <= 0;
 
             mem_pc_plus_4 <= 32'h00000000;
+            mem_jump <= 0;
         end 
         else if (enable) begin
             mem_alu_result <= alu_result;
@@ -59,6 +64,7 @@ module ex_mem(
             mem_reg_write <= reg_write;
 
             mem_pc_plus_4 <= pc_plus_4;
+            mem_jump <= jump;
         end
     end
 endmodule

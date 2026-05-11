@@ -128,14 +128,20 @@ module cpu_testbench;
     end
 
     always @(posedge clk) begin
-    if (!reset) begin
-        $display("DEBUG MEM->WB: mem_reg_write=%b, wb_reg_write=%b, mem_rd=%0d, wb_rd=%0d",
-                cpu_instance.mem_reg_write, 
-                cpu_instance.wb_reg_write,
-                cpu_instance.mem_rd,
-                cpu_instance.wb_rd);
+        if (!reset) begin
+            $display("DEBUG MEM->WB: mem_reg_write=%b, wb_reg_write=%b, mem_rd=%0d, wb_rd=%0d",
+                    cpu_instance.mem_reg_write, 
+                    cpu_instance.wb_reg_write,
+                    cpu_instance.mem_rd,
+                    cpu_instance.wb_rd);
+        end
     end
-end
+
+    always @(posedge clk) begin
+        if (cpu_instance.flush) begin
+            $display(">>> FLUSH at cycle %0d, target PC=%h", cycle, cpu_instance.next_pc);
+        end
+    end
 
     // ================================
     // Test Sequence
@@ -148,8 +154,7 @@ end
         // load Data Memory for the LW test (Test 3)
         cpu_instance.data_mem_inst.memory[0] = 32'h00000020; // 32 decimal
 
-        // Increased to 50 cycles to ensure all instructions pass through WB
-        repeat (50) @(posedge clk);
+        repeat (70) @(posedge clk);
         #1; 
 
 
@@ -168,6 +173,35 @@ end
         // Test 4: Complex Dependencies (x1=5, x2=15, x3=20)
         $display("Test 4 (Complex):   x7=%d, x8=%d, x9=%d (Expected: 5, 15, 20)", 
                 cpu_instance.regf_inst.rf[7], cpu_instance.regf_inst.rf[8], cpu_instance.regf_inst.rf[9]);
+        
+        // Test 5: Branch Taken
+        $display("Test 5 (Branch Taken): x10=%d, x11=%d, x12=%d, x13=%d, x14=%d (Expected: 5, 5, 0, 0, 10)", 
+            cpu_instance.regf_inst.rf[10], 
+            cpu_instance.regf_inst.rf[11],
+            cpu_instance.regf_inst.rf[12],
+            cpu_instance.regf_inst.rf[13],
+            cpu_instance.regf_inst.rf[14]);
+        
+        // Test 6: Branch Not Take
+        $display("Test 6 (Branch Not Taken): x15=%d, x16=%d, x17=%d, x18=%d (Expected: 5, 10, 1, 2)", 
+            cpu_instance.regf_inst.rf[15],
+            cpu_instance.regf_inst.rf[16],
+            cpu_instance.regf_inst.rf[17],
+            cpu_instance.regf_inst.rf[18]);
+        
+        // Test 7: JAL
+        $display("Test 7 (JAL): x25=%h, x19=%d, x20=%d, x21=%d (Expected: 0x74, 0, 0, 10)", 
+            cpu_instance.regf_inst.rf[25],
+            cpu_instance.regf_inst.rf[19],
+            cpu_instance.regf_inst.rf[20],
+            cpu_instance.regf_inst.rf[21]);
+
+        // Test 8: JALR
+        $display("Test 8 (JALR): x25=%h, x22=%d, x23=%d, x24=%d (Expected: 0x88, 16, 0, 10)", 
+            cpu_instance.regf_inst.rf[25],
+            cpu_instance.regf_inst.rf[22],
+            cpu_instance.regf_inst.rf[23],
+            cpu_instance.regf_inst.rf[24]);
 
         // Final Pass/Fail Check
         if (cpu_instance.regf_inst.rf[1] == 32'd5 && 
@@ -178,9 +212,24 @@ end
             cpu_instance.regf_inst.rf[6] == 32'd42 &&
             cpu_instance.regf_inst.rf[7] == 32'd5 &&
             cpu_instance.regf_inst.rf[8] == 32'd15 &&
-            cpu_instance.regf_inst.rf[9] == 32'd20)
-
-            $display("\nALL HAZARD TESTS PASSED");
+            cpu_instance.regf_inst.rf[9] == 32'd20 &&
+            cpu_instance.regf_inst.rf[10] == 32'd5 &&
+            cpu_instance.regf_inst.rf[11] == 32'd5 &&
+            cpu_instance.regf_inst.rf[12] == 32'd0 &&
+            cpu_instance.regf_inst.rf[13] == 32'd0 &&
+            cpu_instance.regf_inst.rf[14] == 32'd10 &&
+            cpu_instance.regf_inst.rf[15] == 32'd5 &&
+            cpu_instance.regf_inst.rf[16] == 32'd10 &&
+            cpu_instance.regf_inst.rf[17] == 32'd1 &&
+            cpu_instance.regf_inst.rf[18] == 32'd2 &&
+            cpu_instance.regf_inst.rf[19] == 32'd0 &&
+            cpu_instance.regf_inst.rf[20] == 32'd0 &&
+            cpu_instance.regf_inst.rf[21] == 32'd10 &&
+            cpu_instance.regf_inst.rf[22] == 32'd16 &&
+            cpu_instance.regf_inst.rf[23] == 32'd0 &&
+            cpu_instance.regf_inst.rf[24] == 32'd10 &&
+            cpu_instance.regf_inst.rf[25] == 32'h88)
+            $display("\nALL TESTS PASSED");
         else
             $display("\nTESTS FAILED - Check Waveforms for Forwarding/Stall issues.");
 
