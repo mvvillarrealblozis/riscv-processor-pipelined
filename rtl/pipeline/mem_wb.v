@@ -37,8 +37,8 @@ module mem_wb (
 
             wb_rd <= 5'b00000;
 
-            wb_mem_to_reg = 0;
-            wb_reg_write = 0;
+            wb_mem_to_reg <= 0;
+            wb_reg_write <= 0;
         end
         else if (enable) begin
             wb_alu_result <= alu_result;
@@ -47,8 +47,8 @@ module mem_wb (
             
             wb_rd <= rd;
 
-            wb_mem_to_reg = mem_to_reg;
-            wb_reg_write = reg_write;
+            wb_mem_to_reg <= mem_to_reg;
+            wb_reg_write <= reg_write;
         end
     end
 endmodule

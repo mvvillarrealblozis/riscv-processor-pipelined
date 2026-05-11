@@ -26,17 +26,17 @@ module forwarding_unit (
 );
 
     always @(*) begin
-        if (mem_reg_write && mem_rd == ex_rs1 && mem_rd != 0) begin
+        if (mem_reg_write && (mem_rd == ex_rs1) && (mem_rd != 0)) begin
             forward_a = 2'b10;
-        end else if (wb_reg_write && wb_rd == ex_rs1 && wb_rd != 0) begin
+        end else if (wb_reg_write && (wb_rd == ex_rs1) && (wb_rd != 0)) begin
             forward_a = 2'b01;
         end else begin
             forward_a = 2'b00;
         end
 
-        if (mem_reg_write && mem_rd == ex_rs2 && mem_rd != 0) begin
+        if (mem_reg_write && (mem_rd == ex_rs2) && (mem_rd != 0)) begin
             forward_b = 2'b10;
-        end else if (wb_reg_write && wb_rd == ex_rs2 && wb_rd != 0) begin
+        end else if (wb_reg_write && (wb_rd == ex_rs2) && (wb_rd != 0)) begin
             forward_b = 2'b01;
         end else begin
             forward_b = 2'b00;

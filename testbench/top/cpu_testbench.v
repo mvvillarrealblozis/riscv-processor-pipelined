@@ -88,7 +88,7 @@ module cpu_testbench;
             );
 
             // ================= WB =================
-            if (cpu_instance.regf_inst.reg_write) begin
+            if (cpu_instance.regf_inst.reg_write && cpu_instance.regf_inst.rd !=  5'b0) begin
                 $display("WB  : WRITE x%0d = %h",
                     cpu_instance.regf_inst.rd,
                     cpu_instance.regf_inst.write_data
@@ -113,13 +113,29 @@ module cpu_testbench;
     //     end
     // end
 
-    // Forward Monitor
+    // Monitors
     always @(posedge clk) begin
         if (cpu_instance.forward_a != 2'b00 || cpu_instance.forward_b != 2'b00) begin
             $display("Forwarding Detected at Cycle %t: A=%b, B=%b", 
                     $time, cpu_instance.forward_a, cpu_instance.forward_b);
         end
+    end 
+
+    always @(posedge clk) begin
+        if (cpu_instance.stall) begin
+            $display(">>> STALL detected at cycle %0d", cycle);
+        end
     end
+
+    always @(posedge clk) begin
+    if (!reset) begin
+        $display("DEBUG MEM->WB: mem_reg_write=%b, wb_reg_write=%b, mem_rd=%0d, wb_rd=%0d",
+                cpu_instance.mem_reg_write, 
+                cpu_instance.wb_reg_write,
+                cpu_instance.mem_rd,
+                cpu_instance.wb_rd);
+    end
+end
 
     // ================================
     // Test Sequence
@@ -129,26 +145,45 @@ module cpu_testbench;
         repeat (2) @(posedge clk);
         reset = 0;
 
-        cpu_instance.data_mem_inst.memory[0] = 32'h00000020; // 32 in decimal
-        
-        repeat (20) @(posedge clk);
-        #1;
+        // load Data Memory for the LW test (Test 3)
+        cpu_instance.data_mem_inst.memory[0] = 32'h00000020; // 32 decimal
 
-        // if (cpu_instance.regf_inst.rf[1] == 32'h5 && cpu_instance.regf_inst.rf[2] == 32'h0F)
-        //     $display("Stall Test PASSED: x1=5, x2=15");
-        // else
-        //     $display("Stall Test FAILED: x1=%h, x2=%h", 
-        //         cpu_instance.regf_inst.rf[1], cpu_instance.regf_inst.rf[2]);
+        // Increased to 50 cycles to ensure all instructions pass through WB
+        repeat (50) @(posedge clk);
+        #1; 
 
-        // LW x1, 0(x0) -> x1 = 32
-        // ADDI x2, x1, 10 -> x2 = 42 (32 + 10)
-        $display("x1: %h (Expected: 00000020)", cpu_instance.regf_inst.rf[1]);
-        $display("x2: %h (Expected: 0000002a)", cpu_instance.regf_inst.rf[2]);
 
-        if (cpu_instance.regf_inst.rf[2] == 32'h2a)
-            $display("Load-Use Test PASSED!");
+        // Test 1: EX Hazard (x1=5, x2=15)
+        $display("Test 1 (EX Hazard):  x1=%d, x2=%d (Expected: 5, 15)", 
+                cpu_instance.regf_inst.rf[1], cpu_instance.regf_inst.rf[2]);
+
+        // Test 2: MEM Hazard (x3=5, x4=15)
+        $display("Test 2 (MEM Hazard): x3=%d, x4=%d (Expected: 5, 15)", 
+                cpu_instance.regf_inst.rf[3], cpu_instance.regf_inst.rf[4]);
+
+        // Test 3: Load-Use Hazard (x5=32, x6=42)
+        $display("Test 3 (Load-Use):  x5=%d, x6=%d (Expected: 32, 42)", 
+                cpu_instance.regf_inst.rf[5], cpu_instance.regf_inst.rf[6]);
+
+        // Test 4: Complex Dependencies (x1=5, x2=15, x3=20)
+        $display("Test 4 (Complex):   x7=%d, x8=%d, x9=%d (Expected: 5, 15, 20)", 
+                cpu_instance.regf_inst.rf[7], cpu_instance.regf_inst.rf[8], cpu_instance.regf_inst.rf[9]);
+
+        // Final Pass/Fail Check
+        if (cpu_instance.regf_inst.rf[1] == 32'd5 && 
+            cpu_instance.regf_inst.rf[2] == 32'd15 &&
+            cpu_instance.regf_inst.rf[3] == 32'd5 &&
+            cpu_instance.regf_inst.rf[4] == 32'd15 &&
+            cpu_instance.regf_inst.rf[5] == 32'd32 &&
+            cpu_instance.regf_inst.rf[6] == 32'd42 &&
+            cpu_instance.regf_inst.rf[7] == 32'd5 &&
+            cpu_instance.regf_inst.rf[8] == 32'd15 &&
+            cpu_instance.regf_inst.rf[9] == 32'd20)
+
+            $display("\nALL HAZARD TESTS PASSED");
         else
-            $display("Load-Use Test FAILED!");
+            $display("\nTESTS FAILED - Check Waveforms for Forwarding/Stall issues.");
+
         $finish;
     end
 

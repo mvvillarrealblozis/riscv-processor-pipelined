@@ -104,6 +104,8 @@ module cpu(
     // Data memory output
     wire [31:0] mem_read_data;      // Data loaded from memory
 
+    wire [31:0] mem_forward_data;
+
     // ========================================================================
     // WB STAGE SIGNALS (outputs of MEM/WB register)
     // ========================================================================
@@ -153,7 +155,7 @@ module cpu(
     if_id if_id_instance (
         .clk(clk),
         .reset(reset),
-        .enable(1'b1),
+        .enable(!stall),
         .pc(pc_out),
         .instruction(instruction),
         .id_pc(id_pc),
@@ -214,7 +216,7 @@ module cpu(
     id_ex id_ex_instance (
         .clk(clk),
         .reset(reset),
-        .enable(!stall),
+        .enable(1'b1),
         .pc(id_pc),
 
         // ===== INPUTS from ID stage (id_* signals) =====
@@ -382,10 +384,12 @@ module cpu(
         endcase
     end
 
+    assign mem_forward_data = (mem_mem_to_reg) ? mem_read_data : mem_alu_result;
+
     // ALU SOURCE A MUX
     always @(*) begin
         case (forward_a)
-            2'b10: forwarded_rdata1 = mem_alu_result;
+            2'b10: forwarded_rdata1 = mem_forward_data;
             2'b01: forwarded_rdata1 = wb_reg_write_data;
             default: forwarded_rdata1 = ex_read_data1;
         endcase
@@ -396,7 +400,7 @@ module cpu(
     // ALU SOURCE B MUX
     always @(*) begin
         case (forward_b)
-            2'b10: forwarded_rdata2 = mem_alu_result;
+            2'b10: forwarded_rdata2 = mem_forward_data;
             2'b01: forwarded_rdata2 = wb_reg_write_data;
             default: forwarded_rdata2 = ex_read_data2;
         endcase

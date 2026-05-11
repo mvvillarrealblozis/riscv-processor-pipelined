@@ -11,16 +11,18 @@ module register_file (
 );  
 
     // Create a 2D array: rf[32 entries][32 bits wide]
-    (* syn_preserve = 1 *) reg [31:0] rf [31:0];
+    reg [31:0] rf [31:0];
     integer i;
 
     /*
     If address_1 == 0: 
     Return 32-bits of zeros Else: Return the value inside rf[address_1]
     */
-    assign rdata1 = (rs1 == 5'b0) ? 32'b0 : rf[rs1];
-    assign rdata2 = (rs2 == 5'b0) ? 32'b0 : rf[rs2];
-
+    // assign rdata1 = (rs1 == 5'b0) ? 32'b0 : rf[rs1];
+    // assign rdata2 = (rs2 == 5'b0) ? 32'b0 : rf[rs2];
+    assign rdata1 = (rs1 == 5'b0) ? 32'b0 : ((reg_write && (rd == rs1)) ? write_data : rf[rs1]);
+    assign rdata2 = (rs2 == 5'b0) ? 32'b0 : ((reg_write && (rd == rs2)) ? write_data : rf[rs2]);
+    
     /*
     On the Rising Edge of Clock or Reset Signal: 
     If Reset is Active: Set all 32 boxes in rf to 0 
