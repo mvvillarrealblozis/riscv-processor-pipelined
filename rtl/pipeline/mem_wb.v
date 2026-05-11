@@ -51,4 +51,4 @@ module mem_wb (
             wb_reg_write = reg_write;
         end
     end
-endmodule;
+endmodule

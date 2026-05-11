@@ -61,4 +61,4 @@ module ex_mem(
             mem_pc_plus_4 <= pc_plus_4;
         end
     end
-endmodule;
+endmodule

@@ -11,7 +11,7 @@ module register_file (
 );  
 
     // Create a 2D array: rf[32 entries][32 bits wide]
-    reg [31:0] rf [31:0];
+    (* syn_preserve = 1 *) reg [31:0] rf [31:0];
     integer i;
 
     /*

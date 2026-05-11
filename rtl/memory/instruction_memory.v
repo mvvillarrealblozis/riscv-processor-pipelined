@@ -11,7 +11,8 @@ module instruction_memory(
             memory[i] = 32'h00000013;
 
         memory[0] = 32'h00002083;   // LW   x1, 0(x0)
-        memory[1] = 32'h00a08113;   // ADDI x2, x1, 10 
+        memory[1] = 32'h00000013;
+        memory[2] = 32'h00a08113;   // ADDI x2, x1, 10 
 
         // memory[5] = 32'h00500093;
         // memory[6] = 32'h00000013;
