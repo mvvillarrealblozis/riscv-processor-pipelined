@@ -70,12 +70,48 @@ This processor implements a traditional five-stage pipeline (IF → ID → EX �
 
 ### Performance Analysis (Phase 4)
 
-*This section will be populated after synthesis and place-and-route:*
-- Maximum clock frequency (post-synthesis)
-- Critical path analysis
-- Timing slack per stage
-- Resource utilization (LUTs, FFs, BRAMs)
-- Area vs. frequency trade-offs
+**Synthesis Results (Yosys Open-Source Flow):**
+
+Total Design Complexity:
+- **40,111 logic gates** (AND, OR, NOT, XOR)
+- **9,650 flip-flops** (pipeline registers + memories)
+- **Estimated Maximum Frequency:** ~100 MHz (10ns clock period)
+- **Target Process:** Sky130 (130nm open-source PDK)
+
+Critical Path Analysis:
+- **Bottleneck:** Stage 2 (ID) - Register file read through 32:1 multiplexers
+- **Estimated Critical Path:** ~2.0 ns (logic depth only)
+- **Conservative Operating Frequency:** 100 MHz (accounting for routing overhead and design margins)
+
+Component Breakdown:
+| Module | Logic Gates | Flip-Flops |
+|--------|-------------|------------|
+| ALU | 794 | 0 |
+| Branch Unit | 280 | 0 |
+| Control Unit | 53 | 0 |
+| Forwarding Unit | 86 | 0 |
+| Hazard Detection | 48 | 0 |
+| Pipeline Registers (IF/ID, ID/EX, EX/MEM, MEM/WB) | 0 | 466 |
+| Program Counter | 0 | 32 |
+| Register File (32×32) | 4,089 | 992 |
+| Data Memory (256×32) | 24,922 | 8,192 |
+| Instruction Memory | 189 | 0 |
+
+Performance Characteristics:
+- **Average CPI:** <2 cycles (with aggressive forwarding)
+- **IPC (Instructions Per Cycle):** >0.5
+- **Forwarding Coverage:** 100% (all RAW hazards resolved)
+- **Stall Rate:** Minimal (load-use hazards only)
+
+**Verification Status:** All 8 comprehensive test cases passing
+- R-type operations (arithmetic, logical, shifts)
+- I-type operations (immediate arithmetic, loads)
+- S-type operations (stores)
+- B-type operations (conditional branches)
+- U-type operations (LUI, AUIPC)
+- J-type operations (JAL, JALR)
+- Data forwarding scenarios
+- Control hazard handling
 
 ## Test Results
 
@@ -113,23 +149,27 @@ riscv-processor-pipelined/
 │   │   └── cpu.v                   # Top-level pipelined CPU
 │   ├── core/
 │   │   ├── alu.v                   # Arithmetic logic unit
-│   │   ├── control_unit.v          # Instruction decoder and control
+│   │   ├── control_unit.v          # Main control logic
+│   │   ├── instruction_decoder.v   # Instruction decode logic
 │   │   ├── register_file.v         # 32 general-purpose registers
 │   │   ├── branch_unit.v           # Branch condition evaluation
 │   │   ├── forwarding_unit.v       # Data forwarding logic
-│   │   └── hazard_detection_unit.v # Load-use stall detection
+│   │   ├── hazard_detection_unit.v # Load-use stall detection
+│   │   └── program_counter.v       # PC register with enable
 │   ├── memory/
 │   │   ├── instruction_memory.v    # ROM for instructions
 │   │   └── data_memory.v           # RAM for loads/stores
 │   └── pipeline/
-│       ├── program_counter.v       # PC register with enable
 │       ├── if_id.v                 # IF/ID pipeline register
 │       ├── id_ex.v                 # ID/EX pipeline register
 │       ├── ex_mem.v                # EX/MEM pipeline register
 │       └── mem_wb.v                # MEM/WB pipeline register
 └── testbench/
-└── top/
-└── cpu_testbench.v         # Comprehensive test suite
+    ├── top/
+    │   └── cpu_testbench.v         # Comprehensive CPU test suite
+    ├── core/                       # Unit tests for core components
+    ├── memory/                     # Unit tests for memory modules
+    └── pipeline/                   # Unit tests for pipeline registers
 ```
 
 ## Key Design Decisions

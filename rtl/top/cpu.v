@@ -396,4 +396,11 @@ module cpu(
     // or ALU result (arithmetic/logic)
     assign wb_reg_write_data = (wb_jump) ? wb_pc_plus_4 : ((wb_mem_to_reg) ? wb_mem_data : wb_alu_result);
 
+
+    // Debug output assignments
+    assign debug_pc = pc_out;
+    assign debug_instruction = id_instruction;
+    assign debug_alu_result = mem_alu_result;
+    assign debug_rd = mem_rd;
+
 endmodule
