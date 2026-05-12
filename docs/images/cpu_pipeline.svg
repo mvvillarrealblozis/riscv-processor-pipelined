@@ -1,0 +1,458 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1934pt" height="1005pt" viewBox="0.00 0.00 1934.22 1005.30">
+<g id="graph0" class="graph" transform="translate(21.600000381469727,983.7000122070312) scale(1)" data-name="RISCV_Pipeline_CPU">
+
+<polygon fill="white" stroke="none" points="-21.6,21.6 -21.6,-983.7 1912.62,-983.7 1912.62,21.6 -21.6,21.6"/>
+<g id="clust2" class="cluster" data-name="cluster_id">
+
+<path fill="#ebfbee" stroke="#69db7c" d="M52.21,-540.7C52.21,-540.7 208.26,-540.7 208.26,-540.7 214.26,-540.7 220.26,-546.7 220.26,-552.7 220.26,-552.7 220.26,-622.7 220.26,-622.7 220.26,-628.7 214.26,-634.7 208.26,-634.7 208.26,-634.7 52.21,-634.7 52.21,-634.7 46.21,-634.7 40.21,-628.7 40.21,-622.7 40.21,-622.7 40.21,-552.7 40.21,-552.7 40.21,-546.7 46.21,-540.7 52.21,-540.7"/>
+<text text-anchor="middle" x="130.23" y="-616.3" font-family="Helvetica,sans-Serif" font-size="16.00">Instruction Decode (ID)</text>
+</g>
+<g id="clust3" class="cluster" data-name="cluster_ex">
+
+<path fill="#fff4e6" stroke="#ffa94d" d="M869.95,-440.7C869.95,-440.7 955.65,-440.7 955.65,-440.7 961.65,-440.7 967.65,-446.7 967.65,-452.7 967.65,-452.7 967.65,-804.7 967.65,-804.7 967.65,-810.7 961.65,-816.7 955.65,-816.7 955.65,-816.7 869.95,-816.7 869.95,-816.7 863.95,-816.7 857.95,-810.7 857.95,-804.7 857.95,-804.7 857.95,-452.7 857.95,-452.7 857.95,-446.7 863.95,-440.7 869.95,-440.7"/>
+<text text-anchor="middle" x="912.8" y="-798.3" font-family="Helvetica,sans-Serif" font-size="16.00">Execute (EX)</text>
+</g>
+<g id="clust4" class="cluster" data-name="cluster_mem">
+
+<path fill="#fff0f6" stroke="#f06595" d="M1353.09,-166.7C1353.09,-166.7 1510.43,-166.7 1510.43,-166.7 1516.43,-166.7 1522.43,-172.7 1522.43,-178.7 1522.43,-178.7 1522.43,-248.7 1522.43,-248.7 1522.43,-254.7 1516.43,-260.7 1510.43,-260.7 1510.43,-260.7 1353.09,-260.7 1353.09,-260.7 1347.09,-260.7 1341.09,-254.7 1341.09,-248.7 1341.09,-248.7 1341.09,-178.7 1341.09,-178.7 1341.09,-172.7 1347.09,-166.7 1353.09,-166.7"/>
+<text text-anchor="middle" x="1431.76" y="-242.3" font-family="Helvetica,sans-Serif" font-size="16.00">Memory Access (MEM)</text>
+</g>
+<!-- PC -->
+<g id="node1" class="node" pointer-events="visible" data-name="PC">
+
+<path fill="#d0ebff" stroke="#495057" stroke-width="1.5" d="M183.44,-962C183.44,-962 77.03,-962 77.03,-962 71.03,-962 65.03,-956 65.03,-950 65.03,-950 65.03,-923.4 65.03,-923.4 65.03,-917.4 71.03,-911.4 77.03,-911.4 77.03,-911.4 183.44,-911.4 183.44,-911.4 189.44,-911.4 195.44,-917.4 195.44,-923.4 195.44,-923.4 195.44,-950 195.44,-950 195.44,-956 189.44,-962 183.44,-962"/>
+<text text-anchor="middle" x="130.23" y="-940.3" font-family="Helvetica,sans-Serif" font-size="12.00">Program Counter</text>
+<text text-anchor="middle" x="130.23" y="-925.9" font-family="Helvetica,sans-Serif" font-size="12.00">(program_counter.v)</text>
+</g>
+<!-- IMEM -->
+<g id="node2" class="node" pointer-events="visible" data-name="IMEM">
+
+<path fill="#d0ebff" stroke="#495057" stroke-width="1.5" d="M190.26,-868C190.26,-868 70.21,-868 70.21,-868 64.21,-868 58.21,-862 58.21,-856 58.21,-856 58.21,-829.4 58.21,-829.4 58.21,-823.4 64.21,-817.4 70.21,-817.4 70.21,-817.4 190.26,-817.4 190.26,-817.4 196.26,-817.4 202.26,-823.4 202.26,-829.4 202.26,-829.4 202.26,-856 202.26,-856 202.26,-862 196.26,-868 190.26,-868"/>
+<text text-anchor="middle" x="130.23" y="-846.3" font-family="Helvetica,sans-Serif" font-size="12.00">Instruction Memory</text>
+<text text-anchor="middle" x="130.23" y="-831.9" font-family="Helvetica,sans-Serif" font-size="12.00">(instruction_memory.v)</text>
+</g>
+<!-- PC&#45;&gt;IMEM -->
+<g id="edge1" class="edge" data-name="PC-&gt;IMEM">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M109.02,-911.01C109.02,-911.01 109.02,-877.17 109.02,-877.17"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="111.47,-877.17 109.02,-870.17 106.57,-877.17 111.47,-877.17"/>
+<text text-anchor="middle" x="94.01" y="-885.09" font-family="Helvetica,sans-Serif" font-size="10.00">pc_out</text>
+</g>
+<!-- IFID -->
+<g id="node3" class="node" pointer-events="visible" data-name="IFID">
+
+<path fill="#a5d8ff" stroke="#495057" stroke-width="1.5" d="M13.2,-737.5C13.2,-737.5 247.27,-737.5 247.27,-737.5 253.27,-737.5 259.27,-743.5 259.27,-749.5 259.27,-749.5 259.27,-761.9 259.27,-761.9 259.27,-767.9 253.27,-773.9 247.27,-773.9 247.27,-773.9 13.2,-773.9 13.2,-773.9 7.2,-773.9 1.2,-767.9 1.2,-761.9 1.2,-761.9 1.2,-749.5 1.2,-749.5 1.2,-743.5 7.2,-737.5 13.2,-737.5"/>
+<text text-anchor="middle" x="72.22" y="-752.1" font-family="Helvetica,sans-Serif" font-size="12.00">IF/ID Pipeline Register</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="143.24,-737.5 143.24,-773.9"/>
+<text text-anchor="middle" x="162.58" y="-752.1" font-family="Helvetica,sans-Serif" font-size="12.00">PC</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="181.91,-737.5 181.91,-773.9"/>
+<text text-anchor="middle" x="220.59" y="-752.1" font-family="Helvetica,sans-Serif" font-size="12.00">Instruction</text>
+</g>
+<!-- PC&#45;&gt;IFID -->
+<g id="edge3" class="edge" data-name="PC-&gt;IFID">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M64.79,-936.7C45.78,-936.7 30.02,-936.7 30.02,-936.7 30.02,-936.7 30.02,-782.53 30.02,-782.53"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="32.47,-782.53 30.02,-775.53 27.57,-782.53 32.47,-782.53"/>
+<text text-anchor="middle" x="15.01" y="-868" font-family="Helvetica,sans-Serif" font-size="10.00">pc_out</text>
+</g>
+<!-- IMEM&#45;&gt;IFID -->
+<g id="edge2" class="edge" data-name="IMEM-&gt;IFID">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M131.02,-817.07C131.02,-817.07 131.02,-782.52 131.02,-782.52"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="133.47,-782.52 131.02,-775.52 128.57,-782.52 133.47,-782.52"/>
+<text text-anchor="middle" x="108.24" y="-790.8" font-family="Helvetica,sans-Serif" font-size="10.00">instruction</text>
+</g>
+<!-- DECODER -->
+<g id="node4" class="node" pointer-events="visible" data-name="DECODER">
+
+<path fill="#d3f9d8" stroke="#495057" stroke-width="1.5" d="M536.22,-781C536.22,-781 416.11,-781 416.11,-781 410.11,-781 404.11,-775 404.11,-769 404.11,-769 404.11,-742.4 404.11,-742.4 404.11,-736.4 410.11,-730.4 416.11,-730.4 416.11,-730.4 536.22,-730.4 536.22,-730.4 542.22,-730.4 548.22,-736.4 548.22,-742.4 548.22,-742.4 548.22,-769 548.22,-769 548.22,-775 542.22,-781 536.22,-781"/>
+<text text-anchor="middle" x="476.17" y="-759.3" font-family="Helvetica,sans-Serif" font-size="12.00">Instruction Decoder</text>
+<text text-anchor="middle" x="476.17" y="-744.9" font-family="Helvetica,sans-Serif" font-size="12.00">(instruction_decoder.v)</text>
+</g>
+<!-- IFID&#45;&gt;DECODER -->
+<g id="edge4" class="edge" data-name="IFID-&gt;DECODER">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M259.05,-761.93C259.05,-761.93 395.18,-761.93 395.18,-761.93"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="395.18,-764.38 402.18,-761.93 395.18,-759.48 395.18,-764.38"/>
+</g>
+<!-- CONTROL -->
+<g id="node5" class="node" pointer-events="visible" data-name="CONTROL">
+
+<path fill="#d3f9d8" stroke="#495057" stroke-width="1.5" d="M515.03,-593C515.03,-593 437.3,-593 437.3,-593 431.3,-593 425.3,-587 425.3,-581 425.3,-581 425.3,-554.4 425.3,-554.4 425.3,-548.4 431.3,-542.4 437.3,-542.4 437.3,-542.4 515.03,-542.4 515.03,-542.4 521.03,-542.4 527.03,-548.4 527.03,-554.4 527.03,-554.4 527.03,-581 527.03,-581 527.03,-587 521.03,-593 515.03,-593"/>
+<text text-anchor="middle" x="476.17" y="-571.3" font-family="Helvetica,sans-Serif" font-size="12.00">Control Unit</text>
+<text text-anchor="middle" x="476.17" y="-556.9" font-family="Helvetica,sans-Serif" font-size="12.00">(control_unit.v)</text>
+</g>
+<!-- IFID&#45;&gt;CONTROL -->
+<g id="edge5" class="edge" data-name="IFID-&gt;CONTROL">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M200.02,-737.62C200.02,-691.07 200.02,-570.7 200.02,-570.7 200.02,-570.7 416.06,-570.7 416.06,-570.7"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="416.06,-573.15 423.06,-570.7 416.06,-568.25 416.06,-573.15"/>
+</g>
+<!-- REGFILE -->
+<g id="node6" class="node" pointer-events="visible" data-name="REGFILE">
+
+<path fill="#d3f9d8" stroke="#495057" stroke-width="1.5" d="M515.02,-961C515.02,-961 437.31,-961 437.31,-961 431.31,-961 425.31,-955 425.31,-949 425.31,-949 425.31,-922.4 425.31,-922.4 425.31,-916.4 431.31,-910.4 437.31,-910.4 437.31,-910.4 515.02,-910.4 515.02,-910.4 521.02,-910.4 527.02,-916.4 527.02,-922.4 527.02,-922.4 527.02,-949 527.02,-949 527.02,-955 521.02,-961 515.02,-961"/>
+<text text-anchor="middle" x="476.17" y="-939.3" font-family="Helvetica,sans-Serif" font-size="12.00">Register File</text>
+<text text-anchor="middle" x="476.17" y="-924.9" font-family="Helvetica,sans-Serif" font-size="12.00">(register_file.v)</text>
+</g>
+<!-- IFID&#45;&gt;REGFILE -->
+<g id="edge6" class="edge" data-name="IFID-&gt;REGFILE">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M231.02,-773.85C231.02,-821.88 231.02,-948.65 231.02,-948.65 231.02,-948.65 416.26,-948.65 416.26,-948.65"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="416.26,-951.1 423.26,-948.65 416.26,-946.2 416.26,-951.1"/>
+</g>
+<!-- HAZARD -->
+<g id="node7" class="node" pointer-events="visible" data-name="HAZARD">
+
+<path fill="#fff3bf" stroke="#495057" stroke-width="1.5" d="M543.08,-687C543.08,-687 409.25,-687 409.25,-687 403.25,-687 397.25,-681 397.25,-675 397.25,-675 397.25,-648.4 397.25,-648.4 397.25,-642.4 403.25,-636.4 409.25,-636.4 409.25,-636.4 543.08,-636.4 543.08,-636.4 549.08,-636.4 555.08,-642.4 555.08,-648.4 555.08,-648.4 555.08,-675 555.08,-675 555.08,-681 549.08,-687 543.08,-687"/>
+<text text-anchor="middle" x="476.17" y="-665.3" font-family="Helvetica,sans-Serif" font-size="12.00">Hazard Detection Unit</text>
+<text text-anchor="middle" x="476.17" y="-650.9" font-family="Helvetica,sans-Serif" font-size="12.00">(hazard_detection_unit.v)</text>
+</g>
+<!-- DECODER&#45;&gt;HAZARD -->
+<g id="edge11" class="edge" data-name="DECODER-&gt;HAZARD">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M477.02,-730.01C477.02,-730.01 477.02,-696.17 477.02,-696.17"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="479.47,-696.17 477.02,-689.17 474.57,-696.17 479.47,-696.17"/>
+</g>
+<!-- IMMSEL -->
+<g id="node8" class="node" pointer-events="visible" data-name="IMMSEL">
+
+<path fill="#e9ecef" stroke="#495057" stroke-width="1.5" d="M167.28,-599C167.28,-599 93.19,-599 93.19,-599 87.19,-599 81.19,-593 81.19,-587 81.19,-587 81.19,-560.4 81.19,-560.4 81.19,-554.4 87.19,-548.4 93.19,-548.4 93.19,-548.4 167.28,-548.4 167.28,-548.4 173.28,-548.4 179.28,-554.4 179.28,-560.4 179.28,-560.4 179.28,-587 179.28,-587 179.28,-593 173.28,-599 167.28,-599"/>
+<text text-anchor="middle" x="130.23" y="-577.3" font-family="Helvetica,sans-Serif" font-size="12.00">Immediate</text>
+<text text-anchor="middle" x="130.23" y="-562.9" font-family="Helvetica,sans-Serif" font-size="12.00">Selector Logic</text>
+</g>
+<!-- DECODER&#45;&gt;IMMSEL -->
+<g id="edge7" class="edge" data-name="DECODER-&gt;IMMSEL">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M403.7,-749.47C379.25,-749.47 358.02,-749.47 358.02,-749.47 358.02,-749.47 358.02,-581.9 358.02,-581.9 358.02,-581.9 188.48,-581.9 188.48,-581.9"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="188.48,-579.45 181.48,-581.9 188.48,-584.35 188.48,-579.45"/>
+</g>
+<!-- IDEX -->
+<g id="node9" class="node" pointer-events="visible" data-name="IDEX">
+
+<path fill="#b2f2bb" stroke="#495057" stroke-width="1.5" d="M343.27,-462.5C343.27,-462.5 609.06,-462.5 609.06,-462.5 615.06,-462.5 621.06,-468.5 621.06,-474.5 621.06,-474.5 621.06,-486.9 621.06,-486.9 621.06,-492.9 615.06,-498.9 609.06,-498.9 609.06,-498.9 343.27,-498.9 343.27,-498.9 337.27,-498.9 331.27,-492.9 331.27,-486.9 331.27,-486.9 331.27,-474.5 331.27,-474.5 331.27,-468.5 337.27,-462.5 343.27,-462.5"/>
+<text text-anchor="middle" x="404.97" y="-477.1" font-family="Helvetica,sans-Serif" font-size="12.00">ID/EX Pipeline Register</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="478.66,-462.5 478.66,-498.9"/>
+<text text-anchor="middle" x="549.86" y="-477.1" font-family="Helvetica,sans-Serif" font-size="12.00">Data + Control Signals</text>
+</g>
+<!-- CONTROL&#45;&gt;IDEX -->
+<g id="edge10" class="edge" data-name="CONTROL-&gt;IDEX">
+
+<path fill="none" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="5,2" d="M477.02,-542.07C477.02,-542.07 477.02,-507.52 477.02,-507.52"/>
+<polygon fill="#adb5bd" stroke="#adb5bd" stroke-width="1.2" points="479.47,-507.52 477.02,-500.52 474.57,-507.52 479.47,-507.52"/>
+<text text-anchor="middle" x="462.02" y="-515.8" font-family="Helvetica,sans-Serif" font-size="10.00">control</text>
+</g>
+<!-- REGFILE&#45;&gt;IDEX -->
+<g id="edge9" class="edge" data-name="REGFILE-&gt;IDEX">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M425,-923.75C404.23,-923.75 385.02,-923.75 385.02,-923.75 385.02,-923.75 385.02,-507.71 385.02,-507.71"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="387.47,-507.71 385.02,-500.71 382.57,-507.71 387.47,-507.71"/>
+<text text-anchor="middle" x="355.28" y="-726.72" font-family="Helvetica,sans-Serif" font-size="10.00">rdata1/rdata2</text>
+</g>
+<!-- HAZARD&#45;&gt;PC -->
+<g id="edge12" class="edge" data-name="HAZARD-&gt;PC">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M396.86,-653.23C369.24,-653.23 345.02,-653.23 345.02,-653.23 345.02,-653.23 345.02,-936.2 345.02,-936.2 345.02,-936.2 204.66,-936.2 204.66,-936.2"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="204.66,-933.75 197.66,-936.2 204.66,-938.65 204.66,-933.75"/>
+<text text-anchor="middle" x="336.13" y="-829.98" font-family="Helvetica,sans-Serif" font-size="10.00">stall</text>
+</g>
+<!-- HAZARD&#45;&gt;IFID -->
+<g id="edge13" class="edge" data-name="HAZARD-&gt;IFID">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M396.88,-670.17C328.28,-670.17 240.02,-670.17 240.02,-670.17 240.02,-670.17 240.02,-728.74 240.02,-728.74"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="237.57,-728.74 240.02,-735.74 242.47,-728.74 237.57,-728.74"/>
+<text text-anchor="middle" x="274.15" y="-661.17" font-family="Helvetica,sans-Serif" font-size="10.00">enable</text>
+</g>
+<!-- IMMSEL&#45;&gt;IDEX -->
+<g id="edge8" class="edge" data-name="IMMSEL-&gt;IDEX">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M179.54,-559.5C249.99,-559.5 371.02,-559.5 371.02,-559.5 371.02,-559.5 371.02,-507.4 371.02,-507.4"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="373.47,-507.4 371.02,-500.4 368.57,-507.4 373.47,-507.4"/>
+</g>
+<!-- ALUA -->
+<g id="node11" class="node" pointer-events="visible" data-name="ALUA">
+
+<path fill="#f1f3f5" stroke="#495057" stroke-width="1.5" d="M943.51,-499C943.51,-499 881.09,-499 881.09,-499 875.09,-499 869.09,-493 869.09,-487 869.09,-487 869.09,-460.4 869.09,-460.4 869.09,-454.4 875.09,-448.4 881.09,-448.4 881.09,-448.4 943.51,-448.4 943.51,-448.4 949.51,-448.4 955.51,-454.4 955.51,-460.4 955.51,-460.4 955.51,-487 955.51,-487 955.51,-493 949.51,-499 943.51,-499"/>
+<text text-anchor="middle" x="912.3" y="-477.3" font-family="Helvetica,sans-Serif" font-size="12.00">ALU Input A</text>
+<text text-anchor="middle" x="912.3" y="-462.9" font-family="Helvetica,sans-Serif" font-size="12.00">Mux</text>
+</g>
+<!-- IDEX&#45;&gt;ALUA -->
+<g id="edge14" class="edge" data-name="IDEX-&gt;ALUA">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M620.79,-486.73C620.79,-486.73 859.97,-486.73 859.97,-486.73"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="859.97,-489.18 866.97,-486.73 859.97,-484.28 859.97,-489.18"/>
+</g>
+<!-- ALUB -->
+<g id="node12" class="node" pointer-events="visible" data-name="ALUB">
+
+<path fill="#f1f3f5" stroke="#495057" stroke-width="1.5" d="M943.51,-687C943.51,-687 881.09,-687 881.09,-687 875.09,-687 869.09,-681 869.09,-675 869.09,-675 869.09,-648.4 869.09,-648.4 869.09,-642.4 875.09,-636.4 881.09,-636.4 881.09,-636.4 943.51,-636.4 943.51,-636.4 949.51,-636.4 955.51,-642.4 955.51,-648.4 955.51,-648.4 955.51,-675 955.51,-675 955.51,-681 949.51,-687 943.51,-687"/>
+<text text-anchor="middle" x="912.3" y="-665.3" font-family="Helvetica,sans-Serif" font-size="12.00">ALU Input B</text>
+<text text-anchor="middle" x="912.3" y="-650.9" font-family="Helvetica,sans-Serif" font-size="12.00">Mux</text>
+</g>
+<!-- IDEX&#45;&gt;ALUB -->
+<g id="edge15" class="edge" data-name="IDEX-&gt;ALUB">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M572.02,-498.58C572.02,-546.53 572.02,-674.4 572.02,-674.4 572.02,-674.4 860.04,-674.4 860.04,-674.4"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="860.04,-676.85 867.04,-674.4 860.04,-671.95 860.04,-676.85"/>
+</g>
+<!-- BRANCH -->
+<g id="node14" class="node" pointer-events="visible" data-name="BRANCH">
+
+<path fill="#ffe8cc" stroke="#495057" stroke-width="1.5" d="M951.34,-405C951.34,-405 873.26,-405 873.26,-405 867.26,-405 861.26,-399 861.26,-393 861.26,-393 861.26,-366.4 861.26,-366.4 861.26,-360.4 867.26,-354.4 873.26,-354.4 873.26,-354.4 951.34,-354.4 951.34,-354.4 957.34,-354.4 963.34,-360.4 963.34,-366.4 963.34,-366.4 963.34,-393 963.34,-393 963.34,-399 957.34,-405 951.34,-405"/>
+<text text-anchor="middle" x="912.3" y="-383.3" font-family="Helvetica,sans-Serif" font-size="12.00">Branch Unit</text>
+<text text-anchor="middle" x="912.3" y="-368.9" font-family="Helvetica,sans-Serif" font-size="12.00">(branch_unit.v)</text>
+</g>
+<!-- IDEX&#45;&gt;BRANCH -->
+<g id="edge18" class="edge" data-name="IDEX-&gt;BRANCH">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M477.02,-462.64C477.02,-433.59 477.02,-379.7 477.02,-379.7 477.02,-379.7 852.27,-379.7 852.27,-379.7"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="852.27,-382.15 859.27,-379.7 852.27,-377.25 852.27,-382.15"/>
+</g>
+<!-- PCPLUS4 -->
+<g id="node16" class="node" pointer-events="visible" data-name="PCPLUS4">
+
+<path fill="#f1f3f5" stroke="#495057" stroke-width="1.5" d="M941.17,-593C941.17,-593 883.43,-593 883.43,-593 877.43,-593 871.43,-587 871.43,-581 871.43,-581 871.43,-554.4 871.43,-554.4 871.43,-548.4 877.43,-542.4 883.43,-542.4 883.43,-542.4 941.17,-542.4 941.17,-542.4 947.17,-542.4 953.17,-548.4 953.17,-554.4 953.17,-554.4 953.17,-581 953.17,-581 953.17,-587 947.17,-593 941.17,-593"/>
+<text text-anchor="middle" x="912.3" y="-571.3" font-family="Helvetica,sans-Serif" font-size="12.00">PC+4</text>
+<text text-anchor="middle" x="912.3" y="-556.9" font-family="Helvetica,sans-Serif" font-size="12.00">Calculation</text>
+</g>
+<!-- IDEX&#45;&gt;PCPLUS4 -->
+<g id="edge19" class="edge" data-name="IDEX-&gt;PCPLUS4">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M588.02,-498.66C588.02,-526.31 588.02,-576.17 588.02,-576.17 588.02,-576.17 862.41,-576.17 862.41,-576.17"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="862.41,-578.62 869.41,-576.17 862.41,-573.72 862.41,-578.62"/>
+</g>
+<!-- EXMEM -->
+<g id="node17" class="node" pointer-events="visible" data-name="EXMEM">
+
+<path fill="#ffd8a8" stroke="#495057" stroke-width="1.5" d="M705.06,-0.5C705.06,-0.5 1119.54,-0.5 1119.54,-0.5 1125.54,-0.5 1131.54,-6.5 1131.54,-12.5 1131.54,-12.5 1131.54,-24.9 1131.54,-24.9 1131.54,-30.9 1125.54,-36.9 1119.54,-36.9 1119.54,-36.9 705.06,-36.9 705.06,-36.9 699.06,-36.9 693.06,-30.9 693.06,-24.9 693.06,-24.9 693.06,-12.5 693.06,-12.5 693.06,-6.5 699.06,-0.5 705.06,-0.5"/>
+<text text-anchor="middle" x="774.75" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">EX/MEM Pipeline Register</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="856.45,-0.5 856.45,-36.9"/>
+<text text-anchor="middle" x="897.79" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">ALU Result</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="939.14,-0.5 939.14,-36.9"/>
+<text text-anchor="middle" x="978.82" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">Store Data</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1018.5,-0.5 1018.5,-36.9"/>
+<text text-anchor="middle" x="1044.68" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">PC+4</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1070.85,-0.5 1070.85,-36.9"/>
+<text text-anchor="middle" x="1101.2" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">Control</text>
+</g>
+<!-- IDEX&#45;&gt;EXMEM -->
+<g id="edge26" class="edge" data-name="IDEX-&gt;EXMEM">
+
+<path fill="none" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="5,2" d="M620.93,-474.37C675.68,-474.37 725.02,-474.37 725.02,-474.37 725.02,-474.37 725.02,-45.66 725.02,-45.66"/>
+<polygon fill="#adb5bd" stroke="#adb5bd" stroke-width="1.2" points="727.47,-45.66 725.02,-38.66 722.57,-45.66 727.47,-45.66"/>
+<text text-anchor="middle" x="710.02" y="-303.06" font-family="Helvetica,sans-Serif" font-size="10.00">control</text>
+</g>
+<!-- FORWARD -->
+<g id="node10" class="node" pointer-events="visible" data-name="FORWARD">
+
+<path fill="#ffe8cc" stroke="#495057" stroke-width="1.5" d="M961.18,-225C961.18,-225 863.42,-225 863.42,-225 857.42,-225 851.42,-219 851.42,-213 851.42,-213 851.42,-186.4 851.42,-186.4 851.42,-180.4 857.42,-174.4 863.42,-174.4 863.42,-174.4 961.18,-174.4 961.18,-174.4 967.18,-174.4 973.18,-180.4 973.18,-186.4 973.18,-186.4 973.18,-213 973.18,-213 973.18,-219 967.18,-225 961.18,-225"/>
+<text text-anchor="middle" x="912.3" y="-203.3" font-family="Helvetica,sans-Serif" font-size="12.00">Forwarding Unit</text>
+<text text-anchor="middle" x="912.3" y="-188.9" font-family="Helvetica,sans-Serif" font-size="12.00">(forwarding_unit.v)</text>
+</g>
+<!-- FORWARD&#45;&gt;ALUA -->
+<g id="edge21" class="edge" data-name="FORWARD-&gt;ALUA">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M859.02,-225.37C859.02,-289.73 859.02,-452.87 859.02,-452.87 859.02,-452.87 860,-452.87 860,-452.87"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="859.98,-455.32 866.98,-452.87 859.98,-450.42 859.98,-455.32"/>
+<text text-anchor="middle" x="836.79" y="-330.61" font-family="Helvetica,sans-Serif" font-size="10.00">forward_a</text>
+</g>
+<!-- FORWARD&#45;&gt;ALUB -->
+<g id="edge22" class="edge" data-name="FORWARD-&gt;ALUB">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M855.02,-225.47C855.02,-320.94 855.02,-649 855.02,-649 855.02,-649 859.78,-649 859.78,-649"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="859.78,-651.45 866.78,-649 859.78,-646.55 859.78,-651.45"/>
+<text text-anchor="middle" x="832.79" y="-430.61" font-family="Helvetica,sans-Serif" font-size="10.00">forward_b</text>
+</g>
+<!-- ALU -->
+<g id="node13" class="node" pointer-events="visible" data-name="ALU">
+
+<path fill="#ffe8cc" stroke="#495057" stroke-width="1.5" d="M928.14,-131C928.14,-131 896.46,-131 896.46,-131 890.46,-131 884.46,-125 884.46,-119 884.46,-119 884.46,-92.4 884.46,-92.4 884.46,-86.4 890.46,-80.4 896.46,-80.4 896.46,-80.4 928.14,-80.4 928.14,-80.4 934.14,-80.4 940.14,-86.4 940.14,-92.4 940.14,-92.4 940.14,-119 940.14,-119 940.14,-125 934.14,-131 928.14,-131"/>
+<text text-anchor="middle" x="912.3" y="-109.3" font-family="Helvetica,sans-Serif" font-size="12.00">ALU</text>
+<text text-anchor="middle" x="912.3" y="-94.9" font-family="Helvetica,sans-Serif" font-size="12.00">(alu.v)</text>
+</g>
+<!-- ALUA&#45;&gt;ALU -->
+<g id="edge16" class="edge" data-name="ALUA-&gt;ALU">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M868.86,-457.43C844.93,-457.43 820.02,-457.43 820.02,-457.43 820.02,-457.43 820.02,-114.17 820.02,-114.17 820.02,-114.17 875.3,-114.17 875.3,-114.17"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="875.3,-116.62 882.3,-114.17 875.3,-111.72 875.3,-116.62"/>
+</g>
+<!-- ALUB&#45;&gt;ALU -->
+<g id="edge17" class="edge" data-name="ALUB-&gt;ALU">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M868.63,-661.7C822.71,-661.7 757.02,-661.7 757.02,-661.7 757.02,-661.7 757.02,-97.23 757.02,-97.23 757.02,-97.23 875.36,-97.23 875.36,-97.23"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="875.36,-99.68 882.36,-97.23 875.36,-94.78 875.36,-99.68"/>
+</g>
+<!-- ALU&#45;&gt;EXMEM -->
+<g id="edge23" class="edge" data-name="ALU-&gt;EXMEM">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M913.02,-80.07C913.02,-80.07 913.02,-45.52 913.02,-45.52"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="915.47,-45.52 913.02,-38.52 910.57,-45.52 915.47,-45.52"/>
+<text text-anchor="middle" x="891.34" y="-53.8" font-family="Helvetica,sans-Serif" font-size="10.00">alu_result</text>
+</g>
+<!-- TARGET -->
+<g id="node15" class="node" pointer-events="visible" data-name="TARGET">
+
+<path fill="#f1f3f5" stroke="#495057" stroke-width="1.5" d="M946.5,-781C946.5,-781 878.1,-781 878.1,-781 872.1,-781 866.1,-775 866.1,-769 866.1,-769 866.1,-742.4 866.1,-742.4 866.1,-736.4 872.1,-730.4 878.1,-730.4 878.1,-730.4 946.5,-730.4 946.5,-730.4 952.5,-730.4 958.5,-736.4 958.5,-742.4 958.5,-742.4 958.5,-769 958.5,-769 958.5,-775 952.5,-781 946.5,-781"/>
+<text text-anchor="middle" x="912.3" y="-759.3" font-family="Helvetica,sans-Serif" font-size="12.00">Branch/Jump</text>
+<text text-anchor="middle" x="912.3" y="-744.9" font-family="Helvetica,sans-Serif" font-size="12.00">Target Logic</text>
+</g>
+<!-- BRANCH&#45;&gt;TARGET -->
+<g id="edge24" class="edge" data-name="BRANCH-&gt;TARGET">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M963.4,-388.17C967.46,-388.17 970.02,-388.17 970.02,-388.17 970.02,-388.17 970.02,-747.23 970.02,-747.23 970.02,-747.23 967.71,-747.23 967.71,-747.23"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="967.71,-744.78 960.71,-747.23 967.71,-749.68 967.71,-744.78"/>
+<text text-anchor="middle" x="1000.32" y="-556.55" font-family="Helvetica,sans-Serif" font-size="10.00">branch_taken</text>
+</g>
+<!-- CONTROLHAZ -->
+<g id="node22" class="node" pointer-events="visible" data-name="CONTROLHAZ">
+
+<path fill="#fff9db" stroke="#fab005" stroke-width="1.5" stroke-dasharray="5,2" d="M1469.79,-594C1469.79,-594 1393.74,-594 1393.74,-594 1387.74,-594 1381.74,-588 1381.74,-582 1381.74,-582 1381.74,-555.4 1381.74,-555.4 1381.74,-549.4 1387.74,-543.4 1393.74,-543.4 1393.74,-543.4 1469.79,-543.4 1469.79,-543.4 1475.79,-543.4 1481.79,-549.4 1481.79,-555.4 1481.79,-555.4 1481.79,-582 1481.79,-582 1481.79,-588 1475.79,-594 1469.79,-594"/>
+<text text-anchor="middle" x="1431.76" y="-572.3" font-family="Helvetica,sans-Serif" font-size="12.00">Flush / Control</text>
+<text text-anchor="middle" x="1431.76" y="-557.9" font-family="Helvetica,sans-Serif" font-size="12.00">Hazard Logic</text>
+</g>
+<!-- BRANCH&#45;&gt;CONTROLHAZ -->
+<g id="edge37" class="edge" data-name="BRANCH-&gt;CONTROLHAZ">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M963.67,-371.23C1097.75,-371.23 1448.02,-371.23 1448.02,-371.23 1448.02,-371.23 1448.02,-534.47 1448.02,-534.47"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1445.57,-534.47 1448.02,-541.47 1450.47,-534.47 1445.57,-534.47"/>
+</g>
+<!-- TARGET&#45;&gt;PC -->
+<g id="edge25" class="edge" data-name="TARGET-&gt;PC">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M913.02,-781.44C913.02,-820.23 913.02,-889.2 913.02,-889.2 913.02,-889.2 152.02,-889.2 152.02,-889.2 152.02,-889.2 152.02,-902.19 152.02,-902.19"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="149.57,-902.19 152.02,-909.19 154.47,-902.19 149.57,-902.19"/>
+<text text-anchor="middle" x="559.06" y="-880.2" font-family="Helvetica,sans-Serif" font-size="10.00">target_pc</text>
+</g>
+<!-- TARGET&#45;&gt;CONTROLHAZ -->
+<g id="edge38" class="edge" data-name="TARGET-&gt;CONTROLHAZ">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M958.99,-764.17C1089.57,-764.17 1449.02,-764.17 1449.02,-764.17 1449.02,-764.17 1449.02,-603.07 1449.02,-603.07"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1451.47,-603.07 1449.02,-596.07 1446.57,-603.07 1451.47,-603.07"/>
+</g>
+<!-- PCPLUS4&#45;&gt;EXMEM -->
+<g id="edge20" class="edge" data-name="PCPLUS4-&gt;EXMEM">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M871.25,-559.23C835.39,-559.23 789.02,-559.23 789.02,-559.23 789.02,-559.23 789.02,-45.5 789.02,-45.5"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="791.47,-45.5 789.02,-38.5 786.57,-45.5 791.47,-45.5"/>
+<text text-anchor="middle" x="766.23" y="-334.48" font-family="Helvetica,sans-Serif" font-size="10.00">pc_plus_4</text>
+</g>
+<!-- DMEM -->
+<g id="node18" class="node" pointer-events="visible" data-name="DMEM">
+
+<path fill="#fcc2d7" stroke="#495057" stroke-width="1.5" d="M1475.96,-131C1475.96,-131 1387.57,-131 1387.57,-131 1381.57,-131 1375.57,-125 1375.57,-119 1375.57,-119 1375.57,-92.4 1375.57,-92.4 1375.57,-86.4 1381.57,-80.4 1387.57,-80.4 1387.57,-80.4 1475.96,-80.4 1475.96,-80.4 1481.96,-80.4 1487.96,-86.4 1487.96,-92.4 1487.96,-92.4 1487.96,-119 1487.96,-119 1487.96,-125 1481.96,-131 1475.96,-131"/>
+<text text-anchor="middle" x="1431.76" y="-109.3" font-family="Helvetica,sans-Serif" font-size="12.00">Data Memory</text>
+<text text-anchor="middle" x="1431.76" y="-94.9" font-family="Helvetica,sans-Serif" font-size="12.00">(data_memory.v)</text>
+</g>
+<!-- EXMEM&#45;&gt;DMEM -->
+<g id="edge27" class="edge" data-name="EXMEM-&gt;DMEM">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1079.02,-36.73C1079.02,-62.21 1079.02,-105.7 1079.02,-105.7 1079.02,-105.7 1366.27,-105.7 1366.27,-105.7"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1366.27,-108.15 1373.27,-105.7 1366.27,-103.25 1366.27,-108.15"/>
+<text text-anchor="middle" x="1159.25" y="-96.7" font-family="Helvetica,sans-Serif" font-size="10.00">address/data</text>
+</g>
+<!-- MEMFWD -->
+<g id="node19" class="node" pointer-events="visible" data-name="MEMFWD">
+
+<path fill="#f1f3f5" stroke="#495057" stroke-width="1.5" d="M1468.61,-225C1468.61,-225 1394.92,-225 1394.92,-225 1388.92,-225 1382.92,-219 1382.92,-213 1382.92,-213 1382.92,-186.4 1382.92,-186.4 1382.92,-180.4 1388.92,-174.4 1394.92,-174.4 1394.92,-174.4 1468.61,-174.4 1468.61,-174.4 1474.61,-174.4 1480.61,-180.4 1480.61,-186.4 1480.61,-186.4 1480.61,-213 1480.61,-213 1480.61,-219 1474.61,-225 1468.61,-225"/>
+<text text-anchor="middle" x="1431.76" y="-203.3" font-family="Helvetica,sans-Serif" font-size="12.00">MEM Forward</text>
+<text text-anchor="middle" x="1431.76" y="-188.9" font-family="Helvetica,sans-Serif" font-size="12.00">Mux</text>
+</g>
+<!-- EXMEM&#45;&gt;MEMFWD -->
+<g id="edge31" class="edge" data-name="EXMEM-&gt;MEMFWD">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1026.02,-36.84C1026.02,-81.14 1026.02,-191.23 1026.02,-191.23 1026.02,-191.23 1374.01,-191.23 1374.01,-191.23"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1374.01,-193.68 1381.01,-191.23 1374.01,-188.78 1374.01,-193.68"/>
+</g>
+<!-- MEMWB -->
+<g id="node20" class="node" pointer-events="visible" data-name="MEMWB">
+
+<path fill="#faa2c1" stroke="#495057" stroke-width="1.5" d="M1215.54,-0.5C1215.54,-0.5 1647.99,-0.5 1647.99,-0.5 1653.99,-0.5 1659.99,-6.5 1659.99,-12.5 1659.99,-12.5 1659.99,-24.9 1659.99,-24.9 1659.99,-30.9 1653.99,-36.9 1647.99,-36.9 1647.99,-36.9 1215.54,-36.9 1215.54,-36.9 1209.54,-36.9 1203.54,-30.9 1203.54,-24.9 1203.54,-24.9 1203.54,-12.5 1203.54,-12.5 1203.54,-6.5 1209.54,-0.5 1215.54,-0.5"/>
+<text text-anchor="middle" x="1286.89" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">MEM/WB Pipeline Register</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1370.25,-0.5 1370.25,-36.9"/>
+<text text-anchor="middle" x="1417.26" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">Memory Data</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1464.26,-0.5 1464.26,-36.9"/>
+<text text-anchor="middle" x="1505.61" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">ALU Result</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1546.96,-0.5 1546.96,-36.9"/>
+<text text-anchor="middle" x="1573.13" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">PC+4</text>
+<polyline fill="none" stroke="#495057" stroke-width="1.5" points="1599.31,-0.5 1599.31,-36.9"/>
+<text text-anchor="middle" x="1629.65" y="-15.1" font-family="Helvetica,sans-Serif" font-size="12.00">Control</text>
+</g>
+<!-- EXMEM&#45;&gt;MEMWB -->
+<g id="edge29" class="edge" data-name="EXMEM-&gt;MEMWB">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1131.47,-12.47C1131.47,-12.47 1195.13,-12.47 1195.13,-12.47"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1195.13,-14.92 1202.13,-12.47 1195.13,-10.02 1195.13,-14.92"/>
+<text text-anchor="middle" x="1209.17" y="-3.47" font-family="Helvetica,sans-Serif" font-size="10.00">alu_result/pc_plus_4</text>
+</g>
+<!-- EXMEM&#45;&gt;MEMWB -->
+<g id="edge33" class="edge" data-name="EXMEM-&gt;MEMWB">
+
+<path fill="none" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="5,2" d="M1131.47,-24.93C1131.47,-24.93 1195.13,-24.93 1195.13,-24.93" style=""/>
+<polygon fill="#adb5bd" stroke="#adb5bd" stroke-width="1.2" points="1195.13,-27.38 1202.13,-24.93 1195.13,-22.48 1195.13,-27.38"/>
+<text text-anchor="middle" x="1148.29" y="-15.93" font-family="Helvetica,sans-Serif" font-size="10.00" style="">control</text>
+</g>
+<!-- DMEM&#45;&gt;MEMFWD -->
+<g id="edge30" class="edge" data-name="DMEM-&gt;MEMFWD">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1432.02,-131.39C1432.02,-131.39 1432.02,-165.23 1432.02,-165.23"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1429.57,-165.23 1432.02,-172.23 1434.47,-165.23 1429.57,-165.23"/>
+</g>
+<!-- DMEM&#45;&gt;MEMWB -->
+<g id="edge28" class="edge" data-name="DMEM-&gt;MEMWB">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1432.02,-80.07C1432.02,-80.07 1432.02,-45.52 1432.02,-45.52"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1434.47,-45.52 1432.02,-38.52 1429.57,-45.52 1434.47,-45.52"/>
+<text text-anchor="middle" x="1409.5" y="-53.8" font-family="Helvetica,sans-Serif" font-size="10.00">read_data</text>
+</g>
+<!-- MEMFWD&#45;&gt;FORWARD -->
+<g id="edge32" class="edge" data-name="MEMFWD-&gt;FORWARD">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1382.43,-208.17C1382.43,-208.17 982.43,-208.17 982.43,-208.17"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="982.43,-205.72 975.43,-208.17 982.43,-210.62 982.43,-205.72"/>
+<text text-anchor="middle" x="1139.35" y="-199.17" font-family="Helvetica,sans-Serif" font-size="10.00">mem_forward_data</text>
+</g>
+<!-- WBMUX -->
+<g id="node21" class="node" pointer-events="visible" data-name="WBMUX">
+
+<path fill="#e5dbff" stroke="#495057" stroke-width="1.5" d="M1879.04,-316C1879.04,-316 1743.97,-316 1743.97,-316 1737.97,-316 1731.97,-310 1731.97,-304 1731.97,-304 1731.97,-277.4 1731.97,-277.4 1731.97,-271.4 1737.97,-265.4 1743.97,-265.4 1743.97,-265.4 1879.04,-265.4 1879.04,-265.4 1885.04,-265.4 1891.04,-271.4 1891.04,-277.4 1891.04,-277.4 1891.04,-304 1891.04,-304 1891.04,-310 1885.04,-316 1879.04,-316"/>
+<text text-anchor="middle" x="1811.51" y="-294.3" font-family="Helvetica,sans-Serif" font-size="12.00">Writeback Mux</text>
+<text text-anchor="middle" x="1811.51" y="-279.9" font-family="Helvetica,sans-Serif" font-size="12.00">(selects ALU/MEM/PC+4)</text>
+</g>
+<!-- MEMWB&#45;&gt;WBMUX -->
+<g id="edge34" class="edge" data-name="MEMWB-&gt;WBMUX">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1659.82,-18.7C1740.7,-18.7 1812.02,-18.7 1812.02,-18.7 1812.02,-18.7 1812.02,-256.29 1812.02,-256.29"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="1809.57,-256.29 1812.02,-263.29 1814.47,-256.29 1809.57,-256.29"/>
+<text text-anchor="middle" x="1793.12" y="-52.4" font-family="Helvetica,sans-Serif" font-size="10.00">wb_data</text>
+</g>
+<!-- WBMUX&#45;&gt;REGFILE -->
+<g id="edge35" class="edge" data-name="WBMUX-&gt;REGFILE">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1812.02,-316.38C1812.02,-436.35 1812.02,-935.7 1812.02,-935.7 1812.02,-935.7 536.12,-935.7 536.12,-935.7"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="536.12,-933.25 529.12,-935.7 536.12,-938.15 536.12,-933.25"/>
+<text text-anchor="middle" x="1441.48" y="-926.7" font-family="Helvetica,sans-Serif" font-size="10.00">wb_reg_write_data</text>
+</g>
+<!-- WBMUX&#45;&gt;FORWARD -->
+<g id="edge36" class="edge" data-name="WBMUX-&gt;FORWARD">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" stroke-dasharray="5,2" d="M1731.68,-290.7C1521.17,-290.7 967.02,-290.7 967.02,-290.7 967.02,-290.7 967.02,-233.86 967.02,-233.86"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="969.47,-233.86 967.02,-226.86 964.57,-233.86 969.47,-233.86"/>
+<text text-anchor="middle" x="1278.69" y="-281.7" font-family="Helvetica,sans-Serif" font-size="10.00">wb_reg_write_data</text>
+</g>
+<!-- CONTROLHAZ&#45;&gt;IFID -->
+<g id="edge39" class="edge" data-name="CONTROLHAZ-&gt;IFID">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1416.02,-594.35C1416.02,-606.2 1416.02,-617.7 1416.02,-617.7 1416.02,-617.7 220.02,-617.7 220.02,-617.7 220.02,-617.7 220.02,-728.84 220.02,-728.84"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="217.57,-728.84 220.02,-735.84 222.47,-728.84 217.57,-728.84"/>
+<text text-anchor="middle" x="763.57" y="-608.7" font-family="Helvetica,sans-Serif" font-size="10.00">flush</text>
+</g>
+<!-- CONTROLHAZ&#45;&gt;IDEX -->
+<g id="edge40" class="edge" data-name="CONTROLHAZ-&gt;IDEX">
+
+<path fill="none" stroke="#343a40" stroke-width="1.2" d="M1416.02,-543.09C1416.02,-531.72 1416.02,-520.85 1416.02,-520.85 1416.02,-520.85 605.02,-520.85 605.02,-520.85 605.02,-520.85 605.02,-507.71 605.02,-507.71"/>
+<polygon fill="#343a40" stroke="#343a40" stroke-width="1.2" points="607.47,-507.71 605.02,-500.71 602.57,-507.71 607.47,-507.71"/>
+<text text-anchor="middle" x="971.17" y="-511.85" font-family="Helvetica,sans-Serif" font-size="10.00">flush (zero controls)</text>
+</g>
+</g>
+</svg>
