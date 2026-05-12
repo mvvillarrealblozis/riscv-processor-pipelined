@@ -32,6 +32,12 @@ This processor implements a traditional five-stage pipeline (IF → ID → EX �
 | **MEM** (Memory) | Access data memory | Load/store operations |
 | **WB** (Write Back) | Write results to registers | Register file write |
 
+### Pipeline Diagram
+
+![RISC-V Pipeline Architecture](docs/images/cpu_pipeline.svg)
+
+*Figure: Five-stage pipeline showing all modules, forwarding paths (dashed lines), and control hazard handling.*
+
 ### Hazard Handling
 
 **Data Hazards:**
