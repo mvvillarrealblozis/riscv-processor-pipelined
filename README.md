@@ -2,23 +2,25 @@
 
 [![Status](https://img.shields.io/badge/status-functional-brightgreen)]()
 [![ISA](https://img.shields.io/badge/ISA-RV32I-blue)]()
-[![Language](https://img.shields.io/badge/HDL-SystemVerilog-orange)]()
+[![Language](https://img.shields.io/badge/HDL-Verilog-orange)]()
 [![Tests](https://img.shields.io/badge/tests-8%2F8%20passing-success)]()
 
-A fully functional five-stage pipelined RISC-V processor implementing the RV32I base integer instruction set. This project extends my [single-cycle RISC-V processor](https://github.com/mvvillarrealblozis/riscv-processor) with a classic pipeline architecture to achieve higher throughput through instruction-level parallelism.
+A fully functional five-stage pipelined RISC-V processor implementing the RV32I base integer instruction set. This project extends my [single-cycle RISC-V processor](https://github.com/mvvillarrealblozis/riscv-processor) with a in-order pipelined microarchitecture to achieve improved throughput through overlapped instruction execution.
 
 ## Overview
 
-This processor implements a traditional five-stage pipeline (IF → ID → EX → MEM → WB) with comprehensive hazard detection and resolution mechanisms. All three types of pipeline hazards are handled: structural hazards (avoided by design), data hazards (forwarding + stalling), and control hazards (flushing).
+This processor implements a traditional five-stage pipeline (IF → ID → EX → MEM → WB) with hazard detection and pipeline control logic. All three types of pipeline hazards are handled: structural hazards (avoided by design), data hazards (forwarding + stalling), and control hazards (flushing).
 
 ### Implemented Features
 
-- **Five-stage pipeline** with dedicated pipeline registers
-- **Data forwarding unit** (EX-to-EX and MEM-to-EX bypass paths)
-- **Hazard detection unit** (load-use stall insertion)
-- **Control hazard handling** (branch/jump flushing)
-- **Complete RV32I support** (arithmetic, logic, loads, stores, branches, jumps)
-- **Comprehensive test suite** (8 test programs validating all hazard types)
+- Five-stage in-order pipeline (IF, ID, EX, MEM, WB)
+- Dedicated IF/ID, ID/EX, EX/MEM, and MEM/WB pipeline registers
+- EX/MEM and MEM/WB forwarding paths for RAW hazard resolution
+- Load-use hazard detection with single-cycle stall insertion
+- Branch and jump flush control for control hazard recovery
+- Modular Verilog RTL hierarchy for datapath and control logic
+- Directed self-checking testbench validating pipeline hazards and RV32I execution
+- Synthesized using Yosys targeting the Sky130 open-source PDK
 
 ## Architecture
 
@@ -47,7 +49,7 @@ This processor implements a traditional five-stage pipeline (IF → ID → EX �
 - **Load-use stalls** insert one bubble when an instruction immediately uses a load result
 
 **Control Hazards:**
-- **Branch resolution** occurs in EX stage (3-cycle branch penalty)
+- **Branch resolution** occurs in EX stage (2-cycle branch penalty)
 - **Pipeline flushing** converts wrong-path instructions to NOPs
 - Flush targets: IF/ID and ID/EX registers (2 instruction slots)
 
@@ -68,20 +70,23 @@ This processor implements a traditional five-stage pipeline (IF → ID → EX �
 - Single-cycle: CPI = 1.0, limited by longest instruction path
 - Pipelined: CPI = ~1.2-1.4, but with shorter clock period → higher throughput
 
-### Performance Analysis (Phase 4)
+## Synthesis and Timing Analysis
 
-**Synthesis Results (Yosys Open-Source Flow):**
+The processor RTL was synthesized using Yosys targeting the Sky130 open-source standard-cell library.
 
-Total Design Complexity:
-- **40,111 logic gates** (AND, OR, NOT, XOR)
-- **9,650 flip-flops** (pipeline registers + memories)
-- **Estimated Maximum Frequency:** ~100 MHz (10ns clock period)
-- **Target Process:** Sky130 (130nm open-source PDK)
+### Post-Synthesis Statistics
 
-Critical Path Analysis:
-- **Bottleneck:** Stage 2 (ID) - Register file read through 32:1 multiplexers
-- **Estimated Critical Path:** ~2.0 ns (logic depth only)
-- **Conservative Operating Frequency:** 100 MHz (accounting for routing overhead and design margins)
+- Estimated operating frequency: ~100 MHz
+- Pipeline register count: 466 flip-flops
+- Register file: 32 × 32-bit general-purpose registers
+- Data memory: 256 × 32-bit memory array
+- Instruction memory: synthesized ROM model
+
+### Timing Observations
+
+- Decode-stage register file muxing produced the dominant combinational timing path
+- Branch resolution in EX reduced decode-stage complexity at the cost of a 2-cycle branch penalty
+- Forwarding logic increased EX-stage mux depth but minimized data hazard stalls
 
 Component Breakdown:
 | Module | Logic Gates | Flip-Flops |
@@ -97,22 +102,26 @@ Component Breakdown:
 | Data Memory (256×32) | 24,922 | 8,192 |
 | Instruction Memory | 189 | 0 |
 
-Performance Characteristics:
-- **Average CPI:** <2 cycles (with aggressive forwarding)
-- **IPC (Instructions Per Cycle):** >0.5
-- **Forwarding Coverage:** 100% (all RAW hazards resolved)
-- **Stall Rate:** Minimal (load-use hazards only)
+Pipeline Behavior
+- Most RAW dependencies resolved through EX/MEM and MEM/WB bypass paths
+- Load-use hazards incur a single-cycle stall
+- Taken branches and jumps flush two pipeline stages
+- Pipeline achieves near one-instruction-per-cycle throughput in dependency-free instruction streams
 
-**Verification Status:** All 8 comprehensive test cases passing
-- R-type operations (arithmetic, logical, shifts)
-- I-type operations (immediate arithmetic, loads)
-- S-type operations (stores)
-- B-type operations (conditional branches)
-- U-type operations (LUI, AUIPC)
-- J-type operations (JAL, JALR)
-- Data forwarding scenarios
-- Control hazard handling
+## Verification
 
+The processor was verified using directed simulation-based testing in Icarus Verilog.
+
+Verification scenarios included:
+
+- Arithmetic and logical instruction execution
+- Register dependencies and forwarding behavior
+- Load-use hazard detection and stall insertion
+- Branch and jump pipeline flushing
+- Multi-instruction dependency chains
+- Control-flow correctness for JAL and JALR operations
+
+Waveform analysis in GTKWave was used to debug pipeline timing, forwarding selection, and control propagation across pipeline stages.
 ## Test Results
 
 All 8 test programs pass, validating correct hazard handling:
@@ -172,7 +181,7 @@ riscv-processor-pipelined/
     └── pipeline/                   # Unit tests for pipeline registers
 ```
 
-## Key Design Decisions
+## Key Design Tradeoffs
 
 **Why forward from MEM instead of just WB?**  
 Forwarding from the MEM stage reduces data hazard latency by one cycle. Without MEM forwarding, instructions would need to wait an extra cycle even though the data is available earlier.
