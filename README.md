@@ -49,7 +49,6 @@ This is a fixed RV32I implementation. Key sizing constants:
 
 | Constant | Value | Description |
 |---|---|---|
-| `XLEN` | 32 | Data and address width |
 | Register file | 32 × 32-bit | General-purpose registers |
 | Data memory | 256 × 32-bit | RAM for loads and stores |
 
